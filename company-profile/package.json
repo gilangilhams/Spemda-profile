@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://gilangilhams.github.io/KODING/",
+  "homepage": "https://gilangilhams.github.io/Spemda-profile/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gilangilhams/KODING.git"
+    "url": "https://github.com/gilangilhams/Spemda-profile.git"
   },
   "scripts": {
     "dev": "vite",
