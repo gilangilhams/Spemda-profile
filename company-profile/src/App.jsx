@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
+import logoSekolah from './assets/logo.png';
 
 export default function App() {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
-  // State & Ref untuk efek Hover Pill pada Navbar
   const navRef = useRef(null);
   const [activeHoverIndex, setActiveHoverIndex] = useState(null);
   const [pillStyle, setPillStyle] = useState({
@@ -22,13 +22,11 @@ export default function App() {
     { label: 'Kontak', href: '#kontak' },
   ];
 
-  // Handler saat kursor mengarah ke menu
   const handleMouseEnter = (e, index) => {
     if (!navRef.current) return;
 
     const itemRect = e.currentTarget.getBoundingClientRect();
     const containerRect = navRef.current.getBoundingClientRect();
-
     const left = itemRect.left - containerRect.left;
     const top = itemRect.top - containerRect.top;
 
@@ -43,7 +41,6 @@ export default function App() {
     setActiveHoverIndex(index);
   };
 
-  // Handler saat kursor keluar dari area Navbar
   const handleMouseLeave = () => {
     setIsHovered(false);
     setActiveHoverIndex(null);
@@ -62,33 +59,33 @@ export default function App() {
   };
 
   return (
-    <div className="font-sans text-slate-800 min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.2),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(168,85,247,0.18),_transparent_30%),linear-gradient(135deg,#eef6ff_0%,#f8faff_35%,#eef2ff_100%)]">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden -z-10">
+    <div className="min-h-screen font-sans text-slate-800 bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.2),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(168,85,247,0.18),_transparent_30%),linear-gradient(135deg,#eef6ff_0%,#f8faff_35%,#eef2ff_100%)]">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute left-[-8rem] top-20 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
         <div className="absolute right-[-6rem] top-40 h-80 w-80 rounded-full bg-violet-300/30 blur-3xl" />
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl" />
       </div>
 
-      {/* 1. NAVBAR DENGAN SLIDING HOVER PILL */}
       <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/20 backdrop-blur-xl shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent drop-shadow-sm">
-              SMP MUHAMMADIYAH 2 SURABAYA
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex items-center space-x-3">
+            <img
+              src={logoSekolah}
+              alt="Logo SMP Muhammadiyah 2"
+              className="h-10 w-auto object-contain"
+            />
+            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-xl font-black text-transparent drop-shadow-sm md:text-2xl">
+              SMP Muhammadiyah 2
             </span>
           </div>
 
-          {/* Container Menu Navigasi dengan Hover Pill */}
           <div
             ref={navRef}
             onMouseLeave={handleMouseLeave}
-            className="relative hidden md:flex items-center rounded-2xl border border-white/60 bg-white/30 p-1.5 shadow-inner shadow-white/40 backdrop-blur-xl"
+            className="relative hidden items-center rounded-2xl border border-white/60 bg-white/30 p-1.5 shadow-inner shadow-white/40 backdrop-blur-xl md:flex"
           >
-            {/* Kapsul Background Meluncur */}
             <div
-              className={`absolute top-0 left-0 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 shadow-lg shadow-blue-500/30 pointer-events-none ${isHovered
-                ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]'
-                : 'transition-opacity duration-200'
+              className={`pointer-events-none absolute left-0 top-0 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 shadow-lg shadow-blue-500/30 ${isHovered ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : 'transition-opacity duration-200'
                 }`}
               style={{
                 width: pillStyle.width,
@@ -98,13 +95,12 @@ export default function App() {
               }}
             />
 
-            {/* Menu Links */}
             {navMenuItems.map((item, index) => (
               <a
                 key={index}
                 href={item.href}
                 onMouseEnter={(e) => handleMouseEnter(e, index)}
-                className={`relative z-10 font-bold text-sm px-6 py-2.5 rounded-xl transition-colors duration-200 ${activeHoverIndex === index ? 'text-white' : 'text-slate-700'
+                className={`relative z-10 rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${activeHoverIndex === index ? 'text-white' : 'text-slate-700'
                   }`}
               >
                 {item.label}
@@ -114,16 +110,15 @@ export default function App() {
 
           <a
             href="#kontak"
-            className="hidden md:inline-block rounded-full border border-white/60 bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(59,130,246,0.4)] transition hover:scale-[1.02] hover:shadow-[0_12px_35px_rgba(79,70,229,0.45)]"
+            className="hidden rounded-full border border-white/60 bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(59,130,246,0.4)] transition hover:scale-[1.02] hover:shadow-[0_12px_35px_rgba(79,70,229,0.45)] md:inline-block"
           >
             Hubungi Kami
           </a>
         </div>
       </nav>
 
-      {/* 2. HERO SECTION */}
-      <section id="beranda" className="relative py-20 md:py-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="beranda" className="relative overflow-hidden py-20 md:py-32">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto max-w-5xl rounded-[32px] border border-white/50 bg-white/25 p-8 shadow-[0_20px_80px_rgba(59,130,246,0.16)] backdrop-blur-xl md:p-12">
             <div className="text-center">
               <span className="inline-block rounded-full border border-blue-200/70 bg-white/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700 backdrop-blur-md">
@@ -173,10 +168,9 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. PROFIL PERUSAHAAN / INSTITUSI */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
-<div className="rounded-[28px] border border-white/60 bg-white/20 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl md:p-10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_70px_rgba(59,130,246,0.14)]">
+          <div className="rounded-[28px] border border-white/60 bg-white/20 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_70px_rgba(59,130,246,0.14)] md:p-10">
             <h2 className="mb-6 text-3xl font-bold text-slate-900">Tentang Kami</h2>
             <p className="mb-4 leading-relaxed text-slate-600">
               Berdiri sejak tahun 2020, kami berkomitmen untuk menjembatani kesenjangan teknologi dalam dunia pendidikan. Melalui pendekatan inovatif dan interaktif, kami membantu sekolah, guru, serta siswa menguasai keterampilan digital era masa kini.
@@ -201,18 +195,21 @@ export default function App() {
             <div className="space-y-4">
               <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
                 <p className="text-sm font-semibold text-blue-100">Visi</p>
-                <p className="mt-1 text-sm leading-relaxed text-white/90">Menjadi penggerak utama transformasi digital pendidikan yang inklusif dan berkualitas tinggi.</p>
+                <p className="mt-1 text-sm leading-relaxed text-white/90">
+                  Menjadi penggerak utama transformasi digital pendidikan yang inklusif dan berkualitas tinggi.
+                </p>
               </div>
               <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
                 <p className="text-sm font-semibold text-blue-100">Misi Utama</p>
-                <p className="mt-1 text-sm leading-relaxed text-white/90">Menyediakan platform belajar interaktif, modul kurikulum modern, serta pelatihan teknis terstruktur bagi pendidik.</p>
+                <p className="mt-1 text-sm leading-relaxed text-white/90">
+                  Menyediakan platform belajar interaktif, modul kurikulum modern, serta pelatihan teknis terstruktur bagi pendidik.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. LAYANAN UNGGULAN */}
       <section id="layanan" className="py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
@@ -254,7 +251,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5. CONTACT FORM */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 rounded-[30px] border border-white/60 bg-white/20 p-8 shadow-[0_25px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl md:grid-cols-2 md:p-12">
           <div>
@@ -265,9 +261,7 @@ export default function App() {
 
             <div className="space-y-4">
               <div className="flex items-center space-x-4 rounded-2xl border border-white/60 bg-white/30 p-3 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  📍
-                </div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">📍</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Alamat Kantor</p>
                   <p className="text-sm font-semibold text-slate-800">Jl. Pendidikan No. 12, Surabaya, Jawa Timur</p>
@@ -275,9 +269,7 @@ export default function App() {
               </div>
 
               <div className="flex items-center space-x-4 rounded-2xl border border-white/60 bg-white/30 p-3 shadow-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  ✉️
-                </div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">✉️</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Email Resmi</p>
                   <p className="text-sm font-semibold text-slate-800">kontak@edutech.sch.id</p>
@@ -339,11 +331,9 @@ export default function App() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="border-t border-white/50 bg-slate-900/80 py-8 text-center text-sm text-slate-300 backdrop-blur-md">
         <p>© {new Date().getFullYear()} SMP MUHAMMADIYAH 2 SURABAYA. Hak Cipta Dilindungi Undang-Undang.</p>
       </footer>
-
     </div>
   );
 }
