@@ -69,7 +69,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <span className="text-2xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              EduTech.
+              SMP MUHAMMADIYAH 2 SURABAYA
             </span>
           </div>
 
@@ -82,8 +82,8 @@ export default function App() {
             {/* Kapsul Background Meluncur */}
             <div
               className={`absolute top-0 left-0 bg-violet-600 rounded-xl pointer-events-none ${isHovered
-                  ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]'
-                  : 'transition-opacity duration-200'
+                ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]'
+                : 'transition-opacity duration-200'
                 }`}
               style={{
                 width: pillStyle.width,
@@ -312,7 +312,7 @@ export default function App() {
 
       {/* FOOTER */}
       <footer className="bg-slate-900 text-gray-400 py-8 border-t border-slate-800 text-center text-sm">
-        <p>© {new Date().getFullYear()} EduTech. Hak Cipta Dilindungi Undang-Undang.</p>
+        <p>© {new Date().getFullYear()} SMP MUHAMMADIYAH 2 SURABAYA. Hak Cipta Dilindungi Undang-Undang.</p>
       </footer>
 
     </div>
