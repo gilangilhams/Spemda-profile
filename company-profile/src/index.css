@@ -13,11 +13,28 @@ html {
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #edf6ff 0%, #f8faff 35%, #eef2ff 100%);
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.float-soft {
+  animation: float 6s ease-in-out infinite;
 }
 
 /* Remove default link underlines where not needed */
