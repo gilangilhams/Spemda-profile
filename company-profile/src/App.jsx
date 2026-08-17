@@ -60,6 +60,9 @@ export default function App() {
   // Hero Slider State
   const [[page, direction], setPage] = useState([0, 0]);
 
+  // Preview Modal Visi Misi State
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
   // Scroll Adaptation State
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
@@ -146,8 +149,8 @@ export default function App() {
       {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN #73ad97) */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
-          ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
-          : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
+            ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
+            : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
           }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -314,8 +317,8 @@ export default function App() {
                 setPage([index, dir]);
               }}
               className={`h-2.5 rounded-full transition-all duration-300 ${index === slideIndex
-                ? 'w-8 bg-[#73ad97]'
-                : 'w-2.5 bg-white/40 hover:bg-white/70'
+                  ? 'w-8 bg-[#73ad97]'
+                  : 'w-2.5 bg-white/40 hover:bg-white/70'
                 }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -358,10 +361,10 @@ export default function App() {
         </div>
       </div>
 
-      {/* 4. PROFIL SECTION (DOMINAN 60% PUTIH + GAMBAR VISI MISI) */}
+      {/* 4. PROFIL SECTION (DENGAN GAMBAR VISI MISI CLICKABLE) */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          {/* Card 1: Tentan Kami */}
+          {/* Card 1: Tentang Kami */}
           <motion.div
             className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 md:p-10"
             initial={{ opacity: 0, x: -60 }}
@@ -378,25 +381,83 @@ export default function App() {
             </p>
           </motion.div>
 
-          {/* Card 2: Gambar Visi & Misi Penuh */}
+          {/* Card 2: Gambar Visi & Misi Clickable */}
           <motion.div
-            className="flex flex-col justify-between overflow-hidden rounded-[30px] bg-[#ee944f] p-6 text-white shadow-xl shadow-[#ee944f]/25 md:p-8"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-[30px] bg-[#ee944f] p-6 text-white shadow-xl shadow-[#ee944f]/25 md:p-8 cursor-pointer"
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            onClick={() => setIsPreviewOpen(true)}
           >
-
-            <div className="w-full h-full overflow-hidden rounded-2xl">
+            <div className="relative w-full h-full overflow-hidden rounded-2xl">
               <img
                 src={visiMisiImg}
                 alt="Visi dan Misi SMP Muhammadiyah 2 Surabaya"
-                className="w-full h-full object-cover rounded-2xl shadow-sm"
+                className="w-full h-full object-cover rounded-2xl shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
+              {/* Overlay Hint saat Hover */}
+              <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl backdrop-blur-[2px]">
+                <span className="bg-white/95 text-slate-900 font-bold px-5 py-2.5 rounded-full text-xs shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-all">
+                  🔍 Klik untuk Memperbesar
+                </span>
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
+
+      {/* MODAL PREVIEW DENGAN ANIMASI SWEEP KE ATAS SAAT EXITED */}
+      <AnimatePresence>
+        {isPreviewOpen && (
+          <motion.div
+            key="modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            onClick={() => setIsPreviewOpen(false)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 md:p-8 cursor-zoom-out"
+          >
+            <motion.div
+              key="modal-card"
+              initial={{ opacity: 0, scale: 0.8, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{
+                opacity: 0,
+                y: -350, // Animasi Sweep Ke Atas
+                scale: 0.9,
+                transition: { duration: 0.45, ease: [0.32, 0, 0.67, 0] }
+              }}
+              onClick={(e) => e.stopPropagation()} // Mencegah modal tertutup saat area gambar diklik
+              className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-3xl p-4 md:p-6 shadow-2xl border border-slate-100 overflow-hidden cursor-default flex flex-col items-center"
+            >
+              {/* Tombol Close */}
+              <button
+                onClick={() => setIsPreviewOpen(false)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-slate-900/60 hover:bg-[#ee944f] backdrop-blur-md text-white font-bold flex items-center justify-center transition shadow-md"
+                aria-label="Tutup Preview"
+              >
+                ✕
+              </button>
+
+              {/* Tampilan Gambar Preview Jelas */}
+              <div className="w-full h-full overflow-auto rounded-2xl flex items-center justify-center">
+                <img
+                  src={visiMisiImg}
+                  alt="Preview Visi dan Misi SMP Muhammadiyah 2 Surabaya"
+                  className="w-full h-auto max-h-[78vh] object-contain rounded-xl shadow-sm"
+                />
+              </div>
+
+              <div className="mt-4 text-center">
+                <p className="text-xs font-semibold text-slate-500">
+                  Klik di luar gambar atau tombol silang untuk keluar (Sweep Up Exit)
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 5. LAYANAN SECTION */}
       <section id="layanan" className="py-20 bg-slate-50">
