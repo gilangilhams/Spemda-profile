@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import logoSekolah from './assets/logo.png';
+import visiMisiImg from './assets/visi_misi.png';
 
 // 1. Data Slider Kegiatan Sekolah
 const slidesData = [
@@ -344,7 +345,6 @@ export default function App() {
               ease: "linear",
             }}
           >
-            {/* Duplikasi array 2x agar animasi loop berjalan tanpa jeda (seamless) */}
             {[...partnersData, ...partnersData, ...partnersData].map((partner, idx) => (
               <div
                 key={idx}
@@ -358,9 +358,10 @@ export default function App() {
         </div>
       </div>
 
-      {/* 4. PROFIL SECTION (DOMINAN 60% PUTIH + SEKUNDER 30% ORANGE #ee944f) */}
+      {/* 4. PROFIL SECTION (DOMINAN 60% PUTIH + GAMBAR VISI MISI) */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
+          {/* Card 1: Tentan Kami */}
           <motion.div
             className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 md:p-10"
             initial={{ opacity: 0, x: -60 }}
@@ -377,27 +378,21 @@ export default function App() {
             </p>
           </motion.div>
 
+          {/* Card 2: Gambar Visi & Misi Penuh */}
           <motion.div
-            className="rounded-[30px] bg-[#ee944f] p-8 text-white shadow-xl shadow-[#ee944f]/25 md:p-10"
+            className="flex flex-col justify-between overflow-hidden rounded-[30px] bg-[#ee944f] p-6 text-white shadow-xl shadow-[#ee944f]/25 md:p-8"
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="mb-4 text-2xl font-bold">Visi & Misi</h3>
-            <div className="space-y-4">
-              <div className="rounded-2xl bg-white/15 p-4 backdrop-blur-md">
-                <p className="text-sm font-semibold text-orange-100">Visi</p>
-                <p className="mt-1 text-sm leading-relaxed text-white">
-                  Menjadi penggerak utama transformasi digital pendidikan yang inklusif dan berkualitas tinggi.
-                </p>
-              </div>
-              <div className="rounded-2xl bg-white/15 p-4 backdrop-blur-md">
-                <p className="text-sm font-semibold text-orange-100">Misi Utama</p>
-                <p className="mt-1 text-sm leading-relaxed text-white">
-                  Menyediakan platform belajar interaktif, modul kurikulum modern, serta pelatihan teknis terstruktur bagi pendidik.
-                </p>
-              </div>
+
+            <div className="w-full h-full overflow-hidden rounded-2xl">
+              <img
+                src={visiMisiImg}
+                alt="Visi dan Misi SMP Muhammadiyah 2 Surabaya"
+                className="w-full h-full object-cover rounded-2xl shadow-sm"
+              />
             </div>
           </motion.div>
         </div>
