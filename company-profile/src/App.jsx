@@ -2,11 +2,54 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoSekolah from './assets/logo.png';
 
-export default function App() {
-  // State untuk splash screen
-  const [isLoading, setIsLoading] = useState(true);
+// 1. Data Slider Kegiatan Sekolah
+const slidesData = [
+  {
+    id: 1,
+    badge: "Informatika & Pemrograman",
+    title: "Pembelajaran Berbasis Computational Thinking & Web Development",
+    description: "Siswa diajak mengeksplorasi dunia logika pemrograman, pembuatan web, dan teknologi digital interaktif sejak dini.",
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1600&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    badge: "Laboratorium & Sains",
+    title: "Praktikum Interaktif & Eksperimen Sains Terapan",
+    description: "Fasilitas laboratorium modern yang mendukung kegiatan ilmiah, observasi, dan pengujian konsep sains secara langsung.",
+    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1600&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    badge: "Ekstrakurikuler & Karakter",
+    title: "Pengembangan Potensi, Kepemimpinan, dan Kreativitas",
+    description: "Berbagai kegiatan ekstrakurikuler mulai dari HW, Robotik, Seni, hingga Olahraga untuk membentuk karakter siswa yang holistik.",
+    image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=1600&auto=format&fit=crop",
+  },
+];
 
-  // State untuk form & navbar
+// 2. Variants Framer Motion untuk Efek Slide Kanan-Kiri
+const slideVariants = {
+  enter: (direction) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction) => ({
+    zIndex: 0,
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+};
+
+export default function App() {
+  // Hero Slider State
+  const [[page, direction], setPage] = useState([0, 0]);
+
+  // Form & Navbar State
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
@@ -27,14 +70,23 @@ export default function App() {
     { label: 'Kontak', href: '#kontak' },
   ];
 
-  // Splash screen timer
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
+  // Hero Slider Logic
+  const slideIndex = Math.abs(page % slidesData.length);
 
+  const paginate = (newDirection) => {
+    setPage([page + newDirection, newDirection]);
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      paginate(1);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [page]);
+
+  const currentSlide = slidesData[slideIndex];
+
+  // Navbar Logic
   const handleMouseEnter = (e, index) => {
     if (!navRef.current) return;
     const itemRect = e.currentTarget.getBoundingClientRect();
@@ -71,71 +123,22 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen font-sans text-slate-800 bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.2),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(168,85,247,0.18),_transparent_30%),linear-gradient(135deg,#eef6ff_0%,#f8faff_35%,#eef2ff_100%)]">
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-[-8rem] top-20 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
-        <div className="absolute right-[-6rem] top-40 h-80 w-80 rounded-full bg-violet-300/30 blur-3xl" />
-        <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl" />
-      </div>
-
-      {/* SPLASH SCREEN */}
-      <AnimatePresence>
-        {isLoading && (
-          <motion.div
-            key="splash"
-            initial={{ opacity: 1, scale: 1 }}
-            exit={{
-              opacity: 0,
-              scale: 2,
-              transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
-            }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900 text-white"
-          >
-            <motion.img
-              src={logoSekolah}
-              alt="Logo SMP Muhammadiyah 2"
-              initial={{ scale: 0.3, opacity: 0 }}
-              animate={{
-                scale: [0.3, 1.15, 1],
-                opacity: 1
-              }}
-              transition={{
-                duration: 1.2,
-                ease: "easeOut"
-              }}
-              className="w-32 h-32 md:w-44 md:h-44 object-contain mb-6 drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]"
-            />
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="text-center px-4"
-            >
-              <h1 className="text-xl md:text-2xl font-bold tracking-widest text-white mb-2">
-                SMP MUHAMMADIYAH 2 SURABAYA
-              </h1>
-              <p className="text-xs md:text-sm text-blue-400 font-medium tracking-wide">
-                Membangun Ekosistem Digital Berbasis Pembelajaran Modern
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+    <div className="min-h-screen font-sans text-slate-800">
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/20 backdrop-blur-xl shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          {/* Brand Logo & Title */}
           <div className="flex items-center space-x-3">
             <img
               src={logoSekolah}
               alt="Logo SMP Muhammadiyah 2"
               className="h-10 w-auto object-contain"
             />
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-xl font-black text-transparent drop-shadow-sm md:text-2xl">
-              SMP Muhammadiyah 2
+            <span className="font-axiforma text-lg md:text-xl font-bold tracking-wide text-slate-900">
+              SMP MUHAMMADIYAH 2 SURABAYA
             </span>
           </div>
+
 
           <div
             ref={navRef}
@@ -175,64 +178,124 @@ export default function App() {
         </div>
       </nav>
 
-      {/* HERO SECTION */}
-      <motion.section
-        id="beranda"
-        className="relative overflow-hidden py-20 md:py-32"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mx-auto max-w-5xl rounded-[32px] border border-white/50 bg-white/25 p-8 shadow-[0_20px_80px_rgba(59,130,246,0.16)] backdrop-blur-xl md:p-12">
-            <div className="text-center">
-              <span className="inline-block rounded-full border border-blue-200/70 bg-white/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700 backdrop-blur-md">
-                Solusi Transformasi Digital Education
-              </span>
-              <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-extrabold tracking-tight text-slate-900 md:text-6xl">
-                Membangun Ekosistem Digital Berbasis Pembelajaran Modern
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 md:text-xl">
-                Kami menghadirkan platform interaktif, pelatihan teknologi, dan infrastruktur digital terpadu untuk mendukung kemajuan pendidikan di Indonesia.
-              </p>
+      {/* HERO SLIDER SECTION */}
+      <section id="beranda" className="relative w-full h-[85vh] min-h-[550px] overflow-hidden bg-slate-900 text-white">
+        {/* ANIMATED SLIDER BACKGROUND */}
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={page}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.4 },
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = Math.abs(offset.x) * velocity.x;
+              if (swipe < -10000) {
+                paginate(1);
+              } else if (swipe > 10000) {
+                paginate(-1);
+              }
+            }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <img
+              src={currentSlide.image}
+              alt={currentSlide.title}
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-slate-900/30" />
+          </motion.div>
+        </AnimatePresence>
 
-              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a
-                  href="#layanan"
-                  className="group rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-3.5 font-semibold text-white shadow-[0_18px_35px_rgba(59,130,246,0.4)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(79,70,229,0.45)]"
-                >
-                  <span className="inline-flex items-center gap-2">
-                    Lihat Layanan Kami
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                  </span>
-                </a>
-                <a
-                  href="#profil"
-                  className="rounded-2xl border border-white/60 bg-white/30 px-8 py-3.5 font-semibold text-slate-700 shadow-[0_10px_30px_rgba(148,163,184,0.18)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-white/40"
-                >
-                  Pelajari Profil
-                </a>
-              </div>
+        {/* OVERLAY CONTENT */}
+        <div className="relative z-10 max-w-7xl mx-auto h-full px-6 flex flex-col justify-end pb-20 md:justify-center md:pb-0">
+          <div className="max-w-3xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                <span className="inline-block bg-blue-600/90 text-white backdrop-blur-md font-semibold px-4 py-1.5 rounded-full text-xs uppercase tracking-wider mb-4 border border-blue-400/30">
+                  {currentSlide.badge}
+                </span>
 
-              <div className="mt-12 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/60 bg-white/30 p-4 shadow-[0_15px_35px_rgba(148,163,184,0.12)] backdrop-blur-md">
-                  <div className="text-2xl font-black text-blue-600">50+</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">Mitra</div>
+                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 drop-shadow-md">
+                  {currentSlide.title}
+                </h1>
+
+                <p className="text-base md:text-lg text-slate-200 mb-8 leading-relaxed max-w-2xl font-light">
+                  {currentSlide.description}
+                </p>
+
+                <div className="flex flex-wrap gap-4">
+                  <a
+                    href="#layanan"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-0.5"
+                  >
+                    Jelajahi Program
+                  </a>
+                  <a
+                    href="#profil"
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-semibold px-7 py-3.5 rounded-xl transition"
+                  >
+                    Profil Sekolah
+                  </a>
                 </div>
-                <div className="rounded-2xl border border-white/60 bg-white/30 p-4 shadow-[0_15px_35px_rgba(148,163,184,0.12)] backdrop-blur-md">
-                  <div className="text-2xl font-black text-indigo-600">10K+</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">Siswa</div>
-                </div>
-                <div className="rounded-2xl border border-white/60 bg-white/30 p-4 shadow-[0_15px_35px_rgba(148,163,184,0.12)] backdrop-blur-md">
-                  <div className="text-2xl font-black text-violet-600">24/7</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">Support</div>
-                </div>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
-      </motion.section>
+
+        {/* NAVIGATION BUTTONS */}
+        <button
+          onClick={() => paginate(-1)}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/40 hover:bg-blue-600/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
+          aria-label="Previous Slide"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button
+          onClick={() => paginate(1)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/40 hover:bg-blue-600/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
+          aria-label="Next Slide"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* PAGINATION DOTS */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
+          {slidesData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                const dir = index > slideIndex ? 1 : -1;
+                setPage([index, dir]);
+              }}
+              className={`h-2.5 rounded-full transition-all duration-300 ${index === slideIndex
+                ? 'w-8 bg-blue-500'
+                : 'w-2.5 bg-white/40 hover:bg-white/70'
+                }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </section>
 
       {/* PROFIL SECTION */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
@@ -251,16 +314,6 @@ export default function App() {
             <p className="mb-6 leading-relaxed text-slate-600">
               Fokus utama kami meliputi pengembangan materi berbasis logika pemrograman, komputasi terapan, serta otomatisasi alur kerja pembelajaran.
             </p>
-            <div className="grid grid-cols-2 gap-4 border-t border-slate-200/80 pt-6">
-              <div className="rounded-2xl border border-white/60 bg-white/30 p-4 shadow-sm transition-transform duration-300 hover:-translate-y-1">
-                <p className="text-3xl font-extrabold text-blue-600">50+</p>
-                <p className="text-sm font-medium text-slate-500">Sekolah Mitra</p>
-              </div>
-              <div className="rounded-2xl border border-white/60 bg-white/30 p-4 shadow-sm transition-transform duration-300 hover:-translate-y-1">
-                <p className="text-3xl font-extrabold text-blue-600">10k+</p>
-                <p className="text-sm font-medium text-slate-500">Siswa Terjangkau</p>
-              </div>
-            </div>
           </motion.div>
 
           <motion.div
@@ -290,7 +343,7 @@ export default function App() {
       </section>
 
       {/* LAYANAN SECTION */}
-      <section id="layanan" className="py-20">
+      <section id="layanan" className="py-20 bg-gradient-to-b from-white to-slate-50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className="mb-4 text-3xl font-bold text-slate-900">Layanan Unggulan</h2>
@@ -341,7 +394,7 @@ export default function App() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">📍</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Alamat Kantor</p>
-                  <p className="text-sm font-semibold text-slate-800">Jl. Genteng Muhamadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur</p>
+                  <p className="text-sm font-semibold text-slate-800">Jl. Pendidikan No. 12, Surabaya, Jawa Timur</p>
                 </div>
               </div>
 
@@ -349,7 +402,7 @@ export default function App() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">✉️</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Email Resmi</p>
-                  <p className="text-sm font-semibold text-slate-800">smpmudaprestasi@gmail.com</p>
+                  <p className="text-sm font-semibold text-slate-800">kontak@edutech.sch.id</p>
                 </div>
               </div>
             </div>
