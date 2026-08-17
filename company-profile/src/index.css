@@ -1,4 +1,10 @@
 /* Global styles - CSS utilities handled by Tailwind CSS via className */
+@import url('https://fonts.cdnfonts.com/css/axiforma');
+
+/* Class khusus untuk font Axiforma */
+.font-axiforma {
+  font-family: 'Axiforma', sans-serif;
+}
 
 * {
   margin: 0;

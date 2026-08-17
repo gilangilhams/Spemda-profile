@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import logoSekolah from './assets/logo.png';
 
 export default function App() {
+  // State untuk splash screen
+  const [isLoading, setIsLoading] = useState(true);
+
+  // State untuk form & navbar
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
@@ -22,9 +27,16 @@ export default function App() {
     { label: 'Kontak', href: '#kontak' },
   ];
 
+  // Splash screen timer
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleMouseEnter = (e, index) => {
     if (!navRef.current) return;
-
     const itemRect = e.currentTarget.getBoundingClientRect();
     const containerRect = navRef.current.getBoundingClientRect();
     const left = itemRect.left - containerRect.left;
@@ -66,6 +78,52 @@ export default function App() {
         <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl" />
       </div>
 
+      {/* SPLASH SCREEN */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="splash"
+            initial={{ opacity: 1, scale: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 2,
+              transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
+            }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900 text-white"
+          >
+            <motion.img
+              src={logoSekolah}
+              alt="Logo SMP Muhammadiyah 2"
+              initial={{ scale: 0.3, opacity: 0 }}
+              animate={{
+                scale: [0.3, 1.15, 1],
+                opacity: 1
+              }}
+              transition={{
+                duration: 1.2,
+                ease: "easeOut"
+              }}
+              className="w-32 h-32 md:w-44 md:h-44 object-contain mb-6 drop-shadow-[0_0_25px_rgba(59,130,246,0.5)]"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="text-center px-4"
+            >
+              <h1 className="text-xl md:text-2xl font-bold tracking-widest text-white mb-2">
+                SMP MUHAMMADIYAH 2 SURABAYA
+              </h1>
+              <p className="text-xs md:text-sm text-blue-400 font-medium tracking-wide">
+                Membangun Ekosistem Digital Berbasis Pembelajaran Modern
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/20 backdrop-blur-xl shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-3">
@@ -117,7 +175,15 @@ export default function App() {
         </div>
       </nav>
 
-      <section id="beranda" className="relative overflow-hidden py-20 md:py-32">
+      {/* HERO SECTION */}
+      <motion.section
+        id="beranda"
+        className="relative overflow-hidden py-20 md:py-32"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto max-w-5xl rounded-[32px] border border-white/50 bg-white/25 p-8 shadow-[0_20px_80px_rgba(59,130,246,0.16)] backdrop-blur-xl md:p-12">
             <div className="text-center">
@@ -166,11 +232,18 @@ export default function App() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
+      {/* PROFIL SECTION */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          <div className="rounded-[28px] border border-white/60 bg-white/20 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_70px_rgba(59,130,246,0.14)] md:p-10">
+          <motion.div
+            className="rounded-[28px] border border-white/60 bg-white/20 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_70px_rgba(59,130,246,0.14)] md:p-10"
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="mb-6 text-3xl font-bold text-slate-900">Tentang Kami</h2>
             <p className="mb-4 leading-relaxed text-slate-600">
               Berdiri sejak tahun 2020, kami berkomitmen untuk menjembatani kesenjangan teknologi dalam dunia pendidikan. Melalui pendekatan inovatif dan interaktif, kami membantu sekolah, guru, serta siswa menguasai keterampilan digital era masa kini.
@@ -188,9 +261,15 @@ export default function App() {
                 <p className="text-sm font-medium text-slate-500">Siswa Terjangkau</p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="rounded-[30px] border border-white/40 bg-gradient-to-br from-blue-600/90 via-indigo-600/90 to-violet-600/90 p-8 text-white shadow-[0_25px_70px_rgba(79,70,229,0.35)] backdrop-blur-xl md:p-10">
+          <motion.div
+            className="rounded-[30px] border border-white/40 bg-gradient-to-br from-blue-600/90 via-indigo-600/90 to-violet-600/90 p-8 text-white shadow-[0_25px_70px_rgba(79,70,229,0.35)] backdrop-blur-xl md:p-10"
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h3 className="mb-4 text-2xl font-bold">Visi & Misi</h3>
             <div className="space-y-4">
               <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
@@ -206,10 +285,11 @@ export default function App() {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
+      {/* LAYANAN SECTION */}
       <section id="layanan" className="py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
@@ -218,42 +298,39 @@ export default function App() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="group rounded-[28px] border border-white/60 bg-white/25 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_70px_rgba(59,130,246,0.12)]">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-cyan-100 text-xl text-blue-600 shadow-inner shadow-white/50 transition-transform duration-300 group-hover:scale-110">
-                💻
-              </div>
-              <h3 className="mb-3 text-xl font-bold text-slate-900">Pengembangan LMS & Web</h3>
-              <p className="text-sm leading-relaxed text-slate-600">
-                Pembuatan platform manajemen pembelajaran (LMS) kustom dan situs profil lembaga yang cepat, aman, serta mudah dikelola.
-              </p>
-            </div>
-
-            <div className="group rounded-[28px] border border-white/60 bg-white/25 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_70px_rgba(99,102,241,0.12)]">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-100 to-violet-100 text-xl text-indigo-600 shadow-inner shadow-white/50 transition-transform duration-300 group-hover:scale-110">
-                🚀
-              </div>
-              <h3 className="mb-3 text-xl font-bold text-slate-900">Kurikulum Informatics</h3>
-              <p className="text-sm leading-relaxed text-slate-600">
-                Penyusunan alur materi Computational Thinking, dasar coding, hingga analisis data interaktif untuk jenjang sekolah.
-              </p>
-            </div>
-
-            <div className="group rounded-[28px] border border-white/60 bg-white/25 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_70px_rgba(16,185,129,0.12)]">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 text-xl text-emerald-600 shadow-inner shadow-white/50 transition-transform duration-300 group-hover:scale-110">
-                🛠️
-              </div>
-              <h3 className="mb-3 text-xl font-bold text-slate-900">Infrastruktur & CBT</h3>
-              <p className="text-sm leading-relaxed text-slate-600">
-                Pembangunan jaringan Computer-Based Testing (CBT) berbasis Wi-Fi lokal yang dapat diakses siswa dengan lancar dan aman.
-              </p>
-            </div>
+            {[
+              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Pembuatan platform manajemen pembelajaran (LMS) kustom dan situs profil lembaga yang cepat, aman, serta mudah dikelola.', delay: 0.1 },
+              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Penyusunan alur materi Computational Thinking, dasar coding, hingga analisis data interaktif untuk jenjang sekolah.', delay: 0.2 },
+              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Pembangunan jaringan Computer-Based Testing (CBT) berbasis Wi-Fi lokal yang dapat diakses siswa dengan lancar dan aman.', delay: 0.3 },
+            ].map((service, index) => (
+              <motion.div
+                key={index}
+                className="group rounded-[28px] border border-white/60 bg-white/25 p-8 shadow-[0_20px_60px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_70px_rgba(59,130,246,0.12)]"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: service.delay }}
+              >
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-cyan-100 text-xl text-blue-600 shadow-inner shadow-white/50 transition-transform duration-300 group-hover:scale-110">
+                  {service.icon}
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-slate-900">{service.title}</h3>
+                <p className="text-sm leading-relaxed text-slate-600">{service.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* KONTAK SECTION */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 rounded-[30px] border border-white/60 bg-white/20 p-8 shadow-[0_25px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl md:grid-cols-2 md:p-12">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="mb-4 text-3xl font-bold text-slate-900">Hubungi Kami</h2>
             <p className="mb-8 leading-relaxed text-slate-600">
               Punya pertanyaan mengenai program atau ingin berkolaborasi? Isi formulir di samping atau hubungi kami melalui saluran berikut:
@@ -264,7 +341,7 @@ export default function App() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">📍</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Alamat Kantor</p>
-                  <p className="text-sm font-semibold text-slate-800">Jl. Pendidikan No. 12, Surabaya, Jawa Timur</p>
+                  <p className="text-sm font-semibold text-slate-800">Jl. Genteng Muhamadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur</p>
                 </div>
               </div>
 
@@ -272,13 +349,20 @@ export default function App() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">✉️</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Email Resmi</p>
-                  <p className="text-sm font-semibold text-slate-800">kontak@edutech.sch.id</p>
+                  <p className="text-sm font-semibold text-slate-800">smpmudaprestasi@gmail.com</p>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 rounded-[26px] border border-white/60 bg-white/25 p-5 shadow-inner shadow-white/40 backdrop-blur-xl md:p-6">
+          <motion.form
+            onSubmit={handleSubmit}
+            className="space-y-4 rounded-[26px] border border-white/60 bg-white/25 p-5 shadow-inner shadow-white/40 backdrop-blur-xl md:p-6"
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             {submitted && (
               <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-700">
                 Pesan Anda berhasil terkirim! Tim kami akan segera menghubungi Anda.
@@ -327,10 +411,11 @@ export default function App() {
             >
               Kirim Pesan
             </button>
-          </form>
+          </motion.form>
         </div>
       </section>
 
+      {/* FOOTER */}
       <footer className="border-t border-white/50 bg-slate-900/80 py-8 text-center text-sm text-slate-300 backdrop-blur-md">
         <p>© {new Date().getFullYear()} SMP MUHAMMADIYAH 2 SURABAYA. Hak Cipta Dilindungi Undang-Undang.</p>
       </footer>
