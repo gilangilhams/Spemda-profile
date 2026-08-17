@@ -27,7 +27,17 @@ const slidesData = [
   },
 ];
 
-// 2. Variants Framer Motion untuk Efek Slide Kanan-Kiri
+// 2. Data Mitra / Instansi Kerja Sama
+const partnersData = [
+  { name: "Kemendikbudristek", icon: "🏛️" },
+  { name: "Google for Education", icon: "🌐" },
+  { name: "Intel Skills for Innovation", icon: "💻" },
+  { name: "MikroTik Academy", icon: "📡" },
+  { name: "Canva for Education", icon: "🎨" },
+  { name: "Yamaha Motor Tech", icon: "🏍️" },
+];
+
+// 3. Variants Framer Motion untuk Efek Slide Hero
 const slideVariants = {
   enter: (direction) => ({
     x: direction > 0 ? '100%' : '-100%',
@@ -132,16 +142,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen font-sans text-slate-800 bg-white">
-      {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN) */}
+      {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN #73ad97) */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
-            ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
-            : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
+          ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
+          : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
           }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-
-          {/* Brand Logo & Title Adaptif */}
           <div className="flex items-center space-x-3">
             <img
               src={logoSekolah}
@@ -159,7 +167,6 @@ export default function App() {
             </motion.span>
           </div>
 
-          {/* Menu Navigasi (Pill Hover warna #73ad97) */}
           <div
             ref={navRef}
             onMouseLeave={handleMouseLeave}
@@ -189,7 +196,6 @@ export default function App() {
             ))}
           </div>
 
-          {/* CTA Hubungi Kami (Aksen 10% - #73ad97) */}
           <a
             href="#kontak"
             className="hidden rounded-full bg-[#73ad97] hover:bg-[#5f9782] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#73ad97]/30 transition transform hover:scale-[1.02] md:inline-block"
@@ -199,8 +205,8 @@ export default function App() {
         </div>
       </nav>
 
-      {/* 2. HERO SLIDER SECTION (SEKUNDER 30% ORANGE + AKSEN 10% SAGE GREEN) */}
-      <section id="beranda" className="relative w-full h-[85vh] min-h-[550px] overflow-hidden bg-slate-900 text-white">
+      {/* 2. HERO SLIDER UTAMA */}
+      <section id="beranda" className="relative w-full h-[80vh] min-h-[520px] overflow-hidden bg-slate-900 text-white">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={page}
@@ -245,7 +251,6 @@ export default function App() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-                {/* Badge Sekunder 30% (#ee944f) */}
                 <span className="inline-block bg-[#ee944f] text-white font-semibold px-4 py-1.5 rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">
                   {currentSlide.badge}
                 </span>
@@ -259,7 +264,6 @@ export default function App() {
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                  {/* CTA 1 Aksen 10% (#73ad97) */}
                   <a
                     href="#layanan"
                     className="bg-[#73ad97] hover:bg-[#5f9782] text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-[#73ad97]/30 transition transform hover:-translate-y-0.5"
@@ -299,7 +303,7 @@ export default function App() {
           </svg>
         </button>
 
-        {/* Pagination Dots (Aksen 10% #73ad97) */}
+        {/* Pagination Dots */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
           {slidesData.map((_, index) => (
             <button
@@ -309,8 +313,8 @@ export default function App() {
                 setPage([index, dir]);
               }}
               className={`h-2.5 rounded-full transition-all duration-300 ${index === slideIndex
-                  ? 'w-8 bg-[#73ad97]'
-                  : 'w-2.5 bg-white/40 hover:bg-white/70'
+                ? 'w-8 bg-[#73ad97]'
+                : 'w-2.5 bg-white/40 hover:bg-white/70'
                 }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -318,10 +322,45 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. PROFIL SECTION (DOMINAN 60% PUTIH + SEKUNDER 30% ORANGE) */}
+      {/* 3. HERO BAR KECIL - INFINITE MARQUEE MITRA & INSTANSI */}
+      <div className="w-full bg-slate-50 border-b border-slate-200/70 py-5 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 mb-3 flex items-center justify-center space-x-3">
+          <div className="h-px bg-slate-200 flex-1 max-w-[80px] md:max-w-[150px]" />
+          <span className="text-xs font-bold uppercase tracking-widest text-[#ee944f]">
+            Kemitraan & Kolaborasi Strategis
+          </span>
+          <div className="h-px bg-slate-200 flex-1 max-w-[80px] md:max-w-[150px]" />
+        </div>
+
+        {/* Running Marquee Container */}
+        <div className="relative flex overflow-x-hidden">
+          <motion.div
+            className="flex space-x-8 md:space-x-12 whitespace-nowrap py-2"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 22,
+              ease: "linear",
+            }}
+          >
+            {/* Duplikasi array 2x agar animasi loop berjalan tanpa jeda (seamless) */}
+            {[...partnersData, ...partnersData, ...partnersData].map((partner, idx) => (
+              <div
+                key={idx}
+                className="flex items-center space-x-3 bg-white px-5 py-2.5 rounded-xl border border-slate-200/80 shadow-sm hover:border-[#73ad97] hover:shadow-md transition-all duration-300 cursor-pointer"
+              >
+                <span className="text-xl">{partner.icon}</span>
+                <span className="text-sm font-bold text-slate-700">{partner.name}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* 4. PROFIL SECTION (DOMINAN 60% PUTIH + SEKUNDER 30% ORANGE #ee944f) */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          {/* Card 1: Dominan 60% White */}
           <motion.div
             className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 md:p-10"
             initial={{ opacity: 0, x: -60 }}
@@ -338,7 +377,6 @@ export default function App() {
             </p>
           </motion.div>
 
-          {/* Card 2: Sekunder 30% Orange (#ee944f) */}
           <motion.div
             className="rounded-[30px] bg-[#ee944f] p-8 text-white shadow-xl shadow-[#ee944f]/25 md:p-10"
             initial={{ opacity: 0, x: 60 }}
@@ -365,7 +403,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 4. LAYANAN SECTION (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN) */}
+      {/* 5. LAYANAN SECTION */}
       <section id="layanan" className="py-20 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
@@ -387,7 +425,6 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: service.delay }}
               >
-                {/* Icon Container Aksen 10% (#73ad97) */}
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#73ad97]/15 text-xl text-[#73ad97] transition-transform duration-300 group-hover:scale-110">
                   {service.icon}
                 </div>
@@ -399,7 +436,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5. KONTAK SECTION (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN) */}
+      {/* 6. KONTAK SECTION */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 rounded-[30px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/60 md:grid-cols-2 md:p-12">
           <motion.div
@@ -482,7 +519,6 @@ export default function App() {
               ></textarea>
             </div>
 
-            {/* Tombol Kirim Pesan Aksen 10% (#73ad97) */}
             <button
               type="submit"
               className="w-full rounded-xl bg-[#73ad97] hover:bg-[#5f9782] py-3.5 font-semibold text-white shadow-lg shadow-[#73ad97]/30 transition hover:-translate-y-0.5"
@@ -493,7 +529,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. FOOTER (SEKUNDER 30% ORANGE - #ee944f) */}
+      {/* 7. FOOTER */}
       <footer className="bg-[#ee944f] py-8 text-center text-sm text-white">
         <p>© {new Date().getFullYear()} SMP MUHAMMADIYAH 2 SURABAYA. Hak Cipta Dilindungi Undang-Undang.</p>
       </footer>
