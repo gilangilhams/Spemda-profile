@@ -241,11 +241,10 @@ export default function App() {
 
       {/* 1. NAVBAR DENGAN MODE GELAP & ANIMASI FRAMER MOTION */}
       <nav
-        className={`sticky top-0 z-50 transition-all duration-300 border-b ${
-          darkMode
+        className={`sticky top-0 z-50 transition-all duration-300 border-b ${darkMode
             ? (isScrolled ? 'bg-slate-900/95 border-slate-800/80 shadow-slate-950/50 backdrop-blur-xl' : 'bg-slate-900/80 border-slate-800/50 backdrop-blur-xl')
             : (isScrolled ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl' : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl')
-        }`}
+          }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-3">
@@ -269,9 +268,8 @@ export default function App() {
           <div className="flex items-center space-x-3">
             <div
               onMouseLeave={() => setHoveredNavIndex(null)}
-              className={`relative hidden items-center rounded-2xl border p-1.5 backdrop-blur-xl md:flex ${
-                darkMode ? 'border-slate-800 bg-slate-900/80' : 'border-slate-200/60 bg-slate-50'
-              }`}
+              className={`relative hidden items-center rounded-2xl border p-1.5 backdrop-blur-xl md:flex ${darkMode ? 'border-slate-800 bg-slate-900/80' : 'border-slate-200/60 bg-slate-50'
+                }`}
             >
               {navMenuItems.map((item, index) => {
                 const isSelected = targetIndex === index;
@@ -281,11 +279,10 @@ export default function App() {
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href, index)}
                     onMouseEnter={() => setHoveredNavIndex(index)}
-                    className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${
-                      isSelected
+                    className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${isSelected
                         ? 'text-white'
                         : (darkMode ? 'text-slate-300 hover:text-white' : 'text-slate-700 hover:text-slate-900')
-                    }`}
+                      }`}
                   >
                     {isSelected && (
                       <motion.div
@@ -309,11 +306,10 @@ export default function App() {
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.05 }}
               onClick={() => setDarkMode(!darkMode)}
-              className={`flex h-10 w-10 items-center justify-center rounded-2xl border transition-colors ${
-                darkMode
+              className={`flex h-10 w-10 items-center justify-center rounded-2xl border transition-colors ${darkMode
                   ? 'border-slate-800 bg-slate-900 text-amber-400 hover:bg-slate-800'
                   : 'border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
+                }`}
               aria-label="Toggle Dark Mode"
             >
               <motion.span
@@ -449,9 +445,8 @@ export default function App() {
       </section>
 
       {/* 3. MARQUEE MITRA & INSTANSI */}
-      <div className={`w-full py-5 overflow-hidden border-b transition-colors duration-300 ${
-        darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200/70'
-      }`}>
+      <div className={`w-full py-5 overflow-hidden border-b transition-colors duration-300 ${darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200/70'
+        }`}>
         <div className="max-w-7xl mx-auto px-6 mb-3 flex items-center justify-center space-x-3">
           <div className={`h-px flex-1 max-w-[80px] md:max-w-[150px] ${darkMode ? 'bg-slate-800' : 'bg-slate-200'}`} />
           <span className="text-xs font-bold uppercase tracking-widest text-[#ee944f]">
@@ -474,9 +469,8 @@ export default function App() {
             {[...partnersData, ...partnersData, ...partnersData].map((partner, idx) => (
               <div
                 key={idx}
-                className={`flex items-center space-x-3 px-5 py-2.5 rounded-xl border shadow-sm hover:border-[#263BAA] hover:shadow-md transition-all duration-300 cursor-pointer ${
-                  darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-200/80 text-slate-700'
-                }`}
+                className={`flex items-center space-x-3 px-5 py-2.5 rounded-xl border shadow-sm hover:border-[#263BAA] hover:shadow-md transition-all duration-300 cursor-pointer ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-200/80 text-slate-700'
+                  }`}
               >
                 <span className="text-xl">{partner.icon}</span>
                 <span className="text-sm font-bold">{partner.name}</span>
@@ -490,11 +484,10 @@ export default function App() {
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
           <motion.div
-            className={`rounded-[28px] border p-8 shadow-xl md:p-10 transition-colors duration-300 ${
-              darkMode
+            className={`rounded-[28px] border p-8 shadow-xl md:p-10 transition-colors duration-300 ${darkMode
                 ? 'bg-slate-900 border-slate-800 text-slate-300 shadow-slate-950/50'
                 : 'bg-white border-slate-100 text-slate-600 shadow-slate-200/50'
-            }`}
+              }`}
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -555,9 +548,8 @@ export default function App() {
                 transition: { duration: 0.45, ease: [0.32, 0, 0.67, 0] }
               }}
               onClick={(e) => e.stopPropagation()}
-              className={`relative max-w-5xl w-full max-h-[90vh] rounded-3xl p-4 md:p-6 shadow-2xl border overflow-hidden cursor-default flex flex-col items-center transition-colors ${
-                darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-100 text-slate-800'
-              }`}
+              className={`relative max-w-5xl w-full max-h-[90vh] rounded-3xl p-4 md:p-6 shadow-2xl border overflow-hidden cursor-default flex flex-col items-center transition-colors ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-100 text-slate-800'
+                }`}
             >
               <button
                 onClick={() => setIsPreviewOpen(false)}
@@ -601,11 +593,10 @@ export default function App() {
             ].map((service, index) => (
               <motion.div
                 key={index}
-                className={`group rounded-[28px] border p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#263BAA]/40 ${
-                  darkMode
+                className={`group rounded-[28px] border p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#263BAA]/40 ${darkMode
                     ? 'bg-slate-900 border-slate-800 shadow-slate-950/40'
                     : 'bg-white border-slate-100 shadow-slate-200/50'
-                }`}
+                  }`}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -624,11 +615,10 @@ export default function App() {
 
       {/* 6. KONTAK SECTION */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
-        <div className={`grid gap-12 rounded-[30px] border p-8 shadow-xl md:grid-cols-2 md:p-12 transition-colors duration-300 ${
-          darkMode
+        <div className={`grid gap-12 rounded-[30px] border p-8 shadow-xl md:grid-cols-2 md:p-12 transition-colors duration-300 ${darkMode
             ? 'bg-slate-900 border-slate-800 shadow-slate-950/50'
             : 'bg-white border-slate-100 shadow-slate-200/60'
-        }`}>
+          }`}>
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -663,9 +653,8 @@ export default function App() {
 
           <motion.form
             onSubmit={handleSubmit}
-            className={`space-y-4 rounded-[26px] p-5 md:p-6 transition-colors ${
-              darkMode ? 'bg-slate-800/50' : 'bg-slate-50'
-            }`}
+            className={`space-y-4 rounded-[26px] p-5 md:p-6 transition-colors ${darkMode ? 'bg-slate-800/50' : 'bg-slate-50'
+              }`}
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -685,9 +674,8 @@ export default function App() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Masukkan nama Anda"
-                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${
-                  darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
-                }`}
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
+                  }`}
               />
             </div>
 
@@ -699,9 +687,8 @@ export default function App() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="nama@email.com"
-                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${
-                  darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
-                }`}
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
+                  }`}
               />
             </div>
 
@@ -713,9 +700,8 @@ export default function App() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Tuliskan pesan Anda di sini..."
-                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${
-                  darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
-                }`}
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
+                  }`}
               ></textarea>
             </div>
 
