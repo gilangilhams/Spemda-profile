@@ -27,7 +27,7 @@ const slidesData = [
     id: 3,
     badge: "Ekstrakurikuler & Karakter",
     title: "Pengembangan Potensi, Kepemimpinan, dan Kreativitas",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    description: "Berbagai kegiatan ekstrakurikuler mulai dari HW, Robotik, Seni, hingga Olahraga untuk membentuk karakter siswa yang holistik.",
     image: hero3Img,
   },
 ];
@@ -152,7 +152,7 @@ export default function App() {
     const timer = setInterval(() => {
       paginate(1);
     }, 6000);
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, [page]);
 
   const currentSlide = slidesData[slideIndex];
@@ -467,6 +467,35 @@ export default function App() {
 
       {/* 4. PROFIL SECTION */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
+
+        {/* VIDEO PROFIL SEKOLAH (FULL CONTAINER RESPONSIVE SECTION) */}
+        <motion.div
+          className="relative w-full overflow-hidden rounded-[32px] border shadow-2xl mb-16 group transition-colors duration-300 border-slate-200/60 dark:border-slate-800 bg-slate-900"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* BADGE TITLE OVERLAY */}
+          <div className="absolute top-5 left-5 z-20 flex items-center space-x-2.5 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-lg">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-xs font-bold uppercase tracking-wider text-white">Video Profil Sekolah</span>
+          </div>
+
+          {/* PLAYER VIDEO */}
+          <div className="relative aspect-video w-full overflow-hidden">
+            <video
+              className="w-full h-full object-cover"
+              controls
+              poster={hero1Img}
+            >
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-students-walking-in-a-university-campus-4314-large.mp4" type="video/mp4" />
+              Browser Anda tidak mendukung pemutaran tag video.
+            </video>
+          </div>
+        </motion.div>
+
+        {/* GRID TENTANG KAMI & VISI MISI */}
         <div className="grid items-center gap-12 md:grid-cols-2">
           <motion.div
             className={`rounded-[28px] border p-8 shadow-xl md:p-10 transition-colors duration-300 ${darkMode
@@ -480,10 +509,10 @@ export default function App() {
           >
             <h2 className="mb-6 text-3xl font-bold text-[#ee944f]">Tentang Kami</h2>
             <p className="mb-4 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              SMP Muhammadiyah 2 Surabaya berkomitmen untuk menjembatani kesenjangan teknologi dalam dunia pendidikan. Melalui pendekatan inovatif dan interaktif, kami membantu sekolah, guru, serta siswa menguasai keterampilan digital era masa kini.
             </p>
             <p className="mb-6 leading-relaxed">
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Fokus utama kami meliputi pengembangan materi berbasis logika pemrograman, komputasi terapan, serta pembentukan karakter Islami yang holistik.
             </p>
           </motion.div>
 
@@ -567,14 +596,14 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className={`mb-4 text-3xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan Unggulan</h2>
-            <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Solusi terintegrasi yang dirancang khusus untuk kebutuhan digitalisasi lembaga pendidikan.</p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
             {[
-              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.1 },
-              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.2 },
-              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.3 },
+              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Pembuatan platform manajemen pembelajaran (LMS) kustom dan situs profil lembaga yang cepat, aman, serta mudah dikelola.', delay: 0.1 },
+              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Penyusunan alur materi Computational Thinking, dasar coding, hingga analisis data interaktif untuk jenjang sekolah.', delay: 0.2 },
+              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Pembangunan jaringan Computer-Based Testing (CBT) berbasis Wi-Fi lokal yang dapat diakses siswa dengan lancar dan aman.', delay: 0.3 },
             ].map((service, index) => (
               <motion.div
                 key={index}
@@ -650,11 +679,11 @@ export default function App() {
           >
             <iframe
               title="Peta Lokasi SMP Muhammadiyah 2 Surabaya"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.84927954261!2d112.74138269999999!3d-7.2579887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f967c7f0eab9%3A0x32528eebe5e367c7!2sSMP%20Muhammadiyah%202%20Surabaya!5e0!3m2!1sid!2sid!4v1787024020689!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+              src="https://maps.google.com/maps?q=SMP%20Muhammadiyah%202%20Surabaya&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: '380px' }}
-              allowFullScreen=""
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="w-full h-full rounded-[26px]"
