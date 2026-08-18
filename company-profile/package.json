@@ -9,10 +9,10 @@
     "url": "https://github.com/gilangilhams/Spemda-profile.git"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 5176",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },

@@ -1,7 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
-  base: '/Spemda-profile/',
+export default defineConfig(({ command }) => ({
+  base: command === 'serve' ? '/' : '/Spemda-profile/',
   plugins: [react()],
-})
+  server: {
+    host: '0.0.0.0',
+    port: 5176,
+    strictPort: false,
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 4173,
+  },
+}))
