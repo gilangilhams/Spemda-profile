@@ -320,7 +320,7 @@ export default function App() {
         </div>
       </nav>
 
-      {/* 2. HERO SLIDER UTAMA */}
+      {/* 2. HERO SLIDER UTAMA (SIDE PADDING RESPONSIF UNTUK AMAN DARI TOMBOL SLIDER) */}
       <section id="beranda" className="relative w-full h-[80vh] min-h-[520px] overflow-hidden bg-slate-900 text-white">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -356,7 +356,8 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="relative z-10 max-w-7xl mx-auto h-full px-6 flex flex-col justify-end pb-20 md:justify-center md:pb-0">
+        {/* Kontainer Teks Hero: px-14 sm:px-20 md:px-24 Mencegah Teks Tertutup Navigasi */}
+        <div className="relative z-10 max-w-7xl mx-auto h-full px-14 sm:px-20 md:px-24 flex flex-col justify-end pb-20 md:justify-center md:pb-0">
           <div className="max-w-3xl">
             <AnimatePresence mode="wait">
               <motion.div
@@ -399,23 +400,23 @@ export default function App() {
           </div>
         </div>
 
-        {/* Navigation Buttons */}
+        {/* Tombol Navigasi Hero (Ukuran & Posisi Tepi Responsif) */}
         <button
           onClick={() => paginate(-1)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/40 hover:bg-[#ee944f] backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900/40 hover:bg-[#ee944f] backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
           aria-label="Previous Slide"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
         <button
           onClick={() => paginate(1)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/40 hover:bg-[#ee944f] backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900/40 hover:bg-[#ee944f] backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
           aria-label="Next Slide"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -537,7 +538,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{
                 opacity: 0,
-                y: -350, // Animasi Sweep Ke Atas
+                y: -350,
                 scale: 0.9,
                 transition: { duration: 0.45, ease: [0.32, 0, 0.67, 0] }
               }}
