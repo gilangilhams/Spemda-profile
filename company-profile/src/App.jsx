@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import logoSekolah from './assets/logo.png';
+import smp2sbyLogo from './assets/SMP2SBY.JPG';
 import visiMisiImg from './assets/visi_misi.png';
 
 // 1. Data Slider Kegiatan Sekolah
@@ -158,7 +159,7 @@ export default function App() {
   return (
     <div className="min-h-screen font-sans text-slate-800 bg-white">
 
-      {/* 0. INTRO SPLASH SCREEN DENGAN ANIMASI SMOOTH ZOOM */}
+      {/* 0. INTRO SPLASH SCREEN DENGAN GAMBAR INTRO SMP2SBY.JPG & SMOOTH ZOOM */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -171,10 +172,10 @@ export default function App() {
             }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950 text-white select-none"
           >
-            {/* Animasi Zoom Bounce Logo */}
+            {/* Animasi Zoom Bounce Logo SMP2SBY.JPG */}
             <motion.img
-              src={logoSekolah}
-              alt="Logo SMP Muhammadiyah 2 Surabaya"
+              src={smp2sbyLogo}
+              alt="Logo Intro SMP Muhammadiyah 2 Surabaya"
               initial={{ scale: 0.2, opacity: 0 }}
               animate={{
                 scale: [0.2, 1.15, 1],
@@ -184,7 +185,7 @@ export default function App() {
                 duration: 1.2,
                 ease: "easeOut"
               }}
-              className="w-32 h-32 md:w-44 md:h-44 object-contain mb-6 drop-shadow-[0_0_35px_rgba(238,148,79,0.45)]"
+              className="w-32 h-32 md:w-44 md:h-44 object-cover rounded-2xl mb-6 shadow-2xl border-2 border-white/20 drop-shadow-[0_0_35px_rgba(38,59,170,0.5)]"
             />
 
             {/* Teks Judul Intro */}
@@ -194,7 +195,7 @@ export default function App() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-center px-4"
             >
-              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#FFFFF] mb-2">
+              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#ee944f] mb-2">
                 SMP MUHAMMADIYAH 2 SURABAYA
               </h1>
               <p className="text-xs md:text-sm text-slate-300 font-medium tracking-wide">
@@ -205,11 +206,11 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN #73ad97) */}
+      {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% ROYAL BLUE #263BAA) */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
-          ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
-          : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
+            ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
+            : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
           }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -221,7 +222,7 @@ export default function App() {
             />
             <motion.span
               animate={{
-                color: isScrolled ? '#263BAA' : '#0f172a'
+                color: isScrolled ? '#ee944f' : '#0f172a'
               }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="font-axiforma text-lg md:text-xl font-bold tracking-wide"
@@ -236,7 +237,7 @@ export default function App() {
             className="relative hidden items-center rounded-2xl border border-slate-200/60 bg-slate-50 p-1.5 backdrop-blur-xl md:flex"
           >
             <div
-              className={`pointer-events-none absolute left-0 top-0 rounded-xl bg-[#73ad97] shadow-md shadow-[#73ad97]/30 ${isHovered ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : 'transition-opacity duration-200'
+              className={`pointer-events-none absolute left-0 top-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30 ${isHovered ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : 'transition-opacity duration-200'
                 }`}
               style={{
                 width: pillStyle.width,
@@ -261,7 +262,7 @@ export default function App() {
 
           <a
             href="#kontak"
-            className="hidden rounded-full bg-[#73ad97] hover:bg-[#5f9782] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#73ad97]/30 transition transform hover:scale-[1.02] md:inline-block"
+            className="hidden rounded-full bg-[#263BAA] hover:bg-[#1f308a] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#263BAA]/30 transition transform hover:scale-[1.02] md:inline-block"
           >
             Hubungi Kami
           </a>
@@ -329,7 +330,7 @@ export default function App() {
                 <div className="flex flex-wrap gap-4">
                   <a
                     href="#layanan"
-                    className="bg-[#73ad97] hover:bg-[#5f9782] text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-[#73ad97]/30 transition transform hover:-translate-y-0.5"
+                    className="bg-[#263BAA] hover:bg-[#1f308a] text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-[#263BAA]/30 transition transform hover:-translate-y-0.5"
                   >
                     Jelajahi Program
                   </a>
@@ -376,8 +377,8 @@ export default function App() {
                 setPage([index, dir]);
               }}
               className={`h-2.5 rounded-full transition-all duration-300 ${index === slideIndex
-                ? 'w-8 bg-[#73ad97]'
-                : 'w-2.5 bg-white/40 hover:bg-white/70'
+                  ? 'w-8 bg-[#263BAA]'
+                  : 'w-2.5 bg-white/40 hover:bg-white/70'
                 }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -410,7 +411,7 @@ export default function App() {
             {[...partnersData, ...partnersData, ...partnersData].map((partner, idx) => (
               <div
                 key={idx}
-                className="flex items-center space-x-3 bg-white px-5 py-2.5 rounded-xl border border-slate-200/80 shadow-sm hover:border-[#73ad97] hover:shadow-md transition-all duration-300 cursor-pointer"
+                className="flex items-center space-x-3 bg-white px-5 py-2.5 rounded-xl border border-slate-200/80 shadow-sm hover:border-[#263BAA] hover:shadow-md transition-all duration-300 cursor-pointer"
               >
                 <span className="text-xl">{partner.icon}</span>
                 <span className="text-sm font-bold text-slate-700">{partner.name}</span>
@@ -516,7 +517,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 5. LAYANAN SECTION */}
+      {/* 5. LAYANAN SECTION (AKSEN 10% ROYAL BLUE #263BAA) */}
       <section id="layanan" className="py-20 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
@@ -532,13 +533,13 @@ export default function App() {
             ].map((service, index) => (
               <motion.div
                 key={index}
-                className="group rounded-[28px] border border-slate-100 bg-white p-8 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-2 hover:border-[#73ad97]/40"
+                className="group rounded-[28px] border border-slate-100 bg-white p-8 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-2 hover:border-[#263BAA]/40"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: service.delay }}
               >
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#73ad97]/15 text-xl text-[#73ad97] transition-transform duration-300 group-hover:scale-110">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#263BAA]/15 text-xl text-[#263BAA] transition-transform duration-300 group-hover:scale-110">
                   {service.icon}
                 </div>
                 <h3 className="mb-3 text-xl font-bold text-slate-900">{service.title}</h3>
@@ -549,7 +550,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. KONTAK SECTION */}
+      {/* 6. KONTAK SECTION (AKSEN 10% ROYAL BLUE #263BAA) */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 rounded-[30px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/60 md:grid-cols-2 md:p-12">
           <motion.div
@@ -604,7 +605,7 @@ export default function App() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Masukkan nama Anda"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#73ad97] focus:ring-2 focus:ring-[#73ad97]/20"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20"
               />
             </div>
 
@@ -616,7 +617,7 @@ export default function App() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="nama@email.com"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#73ad97] focus:ring-2 focus:ring-[#73ad97]/20"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20"
               />
             </div>
 
@@ -628,13 +629,13 @@ export default function App() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Tuliskan pesan Anda di sini..."
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#73ad97] focus:ring-2 focus:ring-[#73ad97]/20"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20"
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full rounded-xl bg-[#73ad97] hover:bg-[#5f9782] py-3.5 font-semibold text-white shadow-lg shadow-[#73ad97]/30 transition hover:-translate-y-0.5"
+              className="w-full rounded-xl bg-[#263BAA] hover:bg-[#1f308a] py-3.5 font-semibold text-white shadow-lg shadow-[#263BAA]/30 transition hover:-translate-y-0.5"
             >
               Kirim Pesan
             </button>
