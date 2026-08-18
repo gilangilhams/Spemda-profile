@@ -6,6 +6,7 @@ import visiMisiImg from './assets/visi_misi.png';
 import hero1Img from './assets/Hero1.JPG';
 import hero2Img from './assets/Hero2.JPG';
 import hero3Img from './assets/Hero3.JPG';
+import videoProfil from './assets/VideoProfil.mp4';
 
 // 1. Data Slider Kegiatan Sekolah
 const slidesData = [
@@ -468,7 +469,7 @@ export default function App() {
       {/* 4. PROFIL SECTION */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
 
-        {/* VIDEO PROFIL SEKOLAH (FULL CONTAINER RESPONSIVE SECTION) */}
+        {/* VIDEO PROFIL SEKOLAH (AUTOPLAY TANPA KONTROL) */}
         <motion.div
           className="relative w-full overflow-hidden rounded-[32px] border shadow-2xl mb-16 group transition-colors duration-300 border-slate-200/60 dark:border-slate-800 bg-slate-900"
           initial={{ opacity: 0, y: 40 }}
@@ -477,19 +478,19 @@ export default function App() {
           transition={{ duration: 0.8 }}
         >
           {/* BADGE TITLE OVERLAY */}
-          <div className="absolute top-5 left-5 z-20 flex items-center space-x-2.5 bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-lg">
-            <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-wider text-white">Video Profil Sekolah</span>
-          </div>
 
-          {/* PLAYER VIDEO */}
+
+          {/* PLAYER VIDEO AUTOPLAY */}
           <div className="relative aspect-video w-full overflow-hidden">
             <video
-              className="w-full h-full object-cover"
-              controls
+              className="w-full h-full object-cover pointer-events-none"
+              autoPlay
+              muted
+              loop
+              playsInline
               poster={hero1Img}
             >
-              <source src="https://assets.mixkit.co/videos/preview/mixkit-students-walking-in-a-university-campus-4314-large.mp4" type="video/mp4" />
+              <source src={videoProfil} type="video/mp4" />
               Browser Anda tidak mendukung pemutaran tag video.
             </video>
           </div>
