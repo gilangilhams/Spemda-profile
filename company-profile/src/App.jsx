@@ -61,6 +61,21 @@ const slideVariants = {
 };
 
 export default function App() {
+  // Mode Gelap (Dark Mode) State dengan Persistence LocalStorage
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
   // Intro Splash Screen State
   const [isLoading, setIsLoading] = useState(true);
 
@@ -141,16 +156,15 @@ export default function App() {
     const timer = setInterval(() => {
       paginate(1);
     }, 6000);
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, [page]);
 
   const currentSlide = slidesData[slideIndex];
 
-  // Handler Klik Menu Navbar dengan Smooth Scroll (Tanpa Animasi Gliding Perantara)
+  // Handler Klik Menu Navbar dengan Smooth Scroll
   const handleNavClick = (e, href, index) => {
     e.preventDefault();
 
-    // Matikan animasi pergerakan kapsul sementara
     setIsClickScrolling(true);
     setActiveNavIndex(index);
     setHoveredNavIndex(null);
@@ -160,7 +174,6 @@ export default function App() {
       element.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Aktifkan kembali animasi normal setelah smooth scroll selesai (800ms)
     if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     scrollTimeoutRef.current = setTimeout(() => {
       setIsClickScrolling(false);
@@ -179,7 +192,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen font-sans text-slate-800 bg-white">
+    <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-white text-slate-800'}`}>
 
       {/* 0. INTRO SPLASH SCREEN */}
       <AnimatePresence>
@@ -226,12 +239,13 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 1. NAVBAR DENGAN OPTIMALISASI ANIMASI HOVER & SCROLL */}
+      {/* 1. NAVBAR DENGAN MODE GELAP & ANIMASI FRAMER MOTION */}
       <nav
-        className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
-          ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
-          : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
-          }`}
+        className={`sticky top-0 z-50 transition-all duration-300 border-b ${
+          darkMode
+            ? (isScrolled ? 'bg-slate-900/95 border-slate-800/80 shadow-slate-950/50 backdrop-blur-xl' : 'bg-slate-900/80 border-slate-800/50 backdrop-blur-xl')
+            : (isScrolled ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl' : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl')
+        }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-3">
@@ -242,7 +256,7 @@ export default function App() {
             />
             <motion.span
               animate={{
-                color: isScrolled ? '#263BAA' : '#0f172a'
+                color: darkMode ? '#ffffff' : (isScrolled ? '#263BAA' : '#0f172a')
               }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="font-axiforma text-lg md:text-xl font-bold tracking-wide"
@@ -252,38 +266,68 @@ export default function App() {
           </div>
 
           {/* MENU NAVIGASI */}
-          <div
-            onMouseLeave={() => setHoveredNavIndex(null)}
-            className="relative hidden items-center rounded-2xl border border-slate-200/60 bg-slate-50 p-1.5 backdrop-blur-xl md:flex"
-          >
-            {navMenuItems.map((item, index) => {
-              const isSelected = targetIndex === index;
-              return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href, index)}
-                  onMouseEnter={() => setHoveredNavIndex(index)}
-                  className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${isSelected ? 'text-white' : 'text-slate-700 hover:text-slate-900'
+          <div className="flex items-center space-x-3">
+            <div
+              onMouseLeave={() => setHoveredNavIndex(null)}
+              className={`relative hidden items-center rounded-2xl border p-1.5 backdrop-blur-xl md:flex ${
+                darkMode ? 'border-slate-800 bg-slate-900/80' : 'border-slate-200/60 bg-slate-50'
+              }`}
+            >
+              {navMenuItems.map((item, index) => {
+                const isSelected = targetIndex === index;
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href, index)}
+                    onMouseEnter={() => setHoveredNavIndex(index)}
+                    className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${
+                      isSelected
+                        ? 'text-white'
+                        : (darkMode ? 'text-slate-300 hover:text-white' : 'text-slate-700 hover:text-slate-900')
                     }`}
-                >
-                  {isSelected && (
-                    <motion.div
-                      layoutId="active-navbar-pill"
-                      transition={
-                        isClickScrolling
-                          ? { duration: 0 } // Langsung berpindah saat klik (tanpa animasi meluncur)
-                          : { type: "spring", stiffness: 380, damping: 30 } // Animasi spring mulus saat scroll manual
-                      }
-                      className="absolute inset-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30"
-                    />
-                  )}
-                  <span className="relative z-10">{item.label}</span>
-                </a>
-              );
-            })}
-          </div>
+                  >
+                    {isSelected && (
+                      <motion.div
+                        layoutId="active-navbar-pill"
+                        transition={
+                          isClickScrolling
+                            ? { duration: 0 }
+                            : { type: "spring", stiffness: 380, damping: 30 }
+                        }
+                        className="absolute inset-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30"
+                      />
+                    )}
+                    <span className="relative z-10">{item.label}</span>
+                  </a>
+                );
+              })}
+            </div>
 
+            {/* TOMBOL TOGGLE DARK MODE */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.05 }}
+              onClick={() => setDarkMode(!darkMode)}
+              className={`flex h-10 w-10 items-center justify-center rounded-2xl border transition-colors ${
+                darkMode
+                  ? 'border-slate-800 bg-slate-900 text-amber-400 hover:bg-slate-800'
+                  : 'border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+              aria-label="Toggle Dark Mode"
+            >
+              <motion.span
+                key={darkMode ? 'dark' : 'light'}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="text-lg"
+              >
+                {darkMode ? '☀️' : '🌙'}
+              </motion.span>
+            </motion.button>
+          </div>
         </div>
       </nav>
 
@@ -337,7 +381,7 @@ export default function App() {
                   {currentSlide.badge}
                 </span>
 
-                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 drop-shadow-md">
+                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 drop-shadow-md text-white">
                   {currentSlide.title}
                 </h1>
 
@@ -405,13 +449,15 @@ export default function App() {
       </section>
 
       {/* 3. MARQUEE MITRA & INSTANSI */}
-      <div className="w-full bg-slate-50 border-b border-slate-200/70 py-5 overflow-hidden">
+      <div className={`w-full py-5 overflow-hidden border-b transition-colors duration-300 ${
+        darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200/70'
+      }`}>
         <div className="max-w-7xl mx-auto px-6 mb-3 flex items-center justify-center space-x-3">
-          <div className="h-px bg-slate-200 flex-1 max-w-[80px] md:max-w-[150px]" />
+          <div className={`h-px flex-1 max-w-[80px] md:max-w-[150px] ${darkMode ? 'bg-slate-800' : 'bg-slate-200'}`} />
           <span className="text-xs font-bold uppercase tracking-widest text-[#ee944f]">
             Kemitraan & Kolaborasi Strategis
           </span>
-          <div className="h-px bg-slate-200 flex-1 max-w-[80px] md:max-w-[150px]" />
+          <div className={`h-px flex-1 max-w-[80px] md:max-w-[150px] ${darkMode ? 'bg-slate-800' : 'bg-slate-200'}`} />
         </div>
 
         <div className="relative flex overflow-x-hidden">
@@ -428,10 +474,12 @@ export default function App() {
             {[...partnersData, ...partnersData, ...partnersData].map((partner, idx) => (
               <div
                 key={idx}
-                className="flex items-center space-x-3 bg-white px-5 py-2.5 rounded-xl border border-slate-200/80 shadow-sm hover:border-[#263BAA] hover:shadow-md transition-all duration-300 cursor-pointer"
+                className={`flex items-center space-x-3 px-5 py-2.5 rounded-xl border shadow-sm hover:border-[#263BAA] hover:shadow-md transition-all duration-300 cursor-pointer ${
+                  darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-200/80 text-slate-700'
+                }`}
               >
                 <span className="text-xl">{partner.icon}</span>
-                <span className="text-sm font-bold text-slate-700">{partner.name}</span>
+                <span className="text-sm font-bold">{partner.name}</span>
               </div>
             ))}
           </motion.div>
@@ -442,17 +490,21 @@ export default function App() {
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
           <motion.div
-            className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 md:p-10"
+            className={`rounded-[28px] border p-8 shadow-xl md:p-10 transition-colors duration-300 ${
+              darkMode
+                ? 'bg-slate-900 border-slate-800 text-slate-300 shadow-slate-950/50'
+                : 'bg-white border-slate-100 text-slate-600 shadow-slate-200/50'
+            }`}
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="mb-6 text-3xl font-bold text-[#ee944f]">Tentang Kami</h2>
-            <p className="mb-4 leading-relaxed text-slate-600">
+            <p className="mb-4 leading-relaxed">
               Berdiri sejak tahun 2020, kami berkomitmen untuk menjembatani kesenjangan teknologi dalam dunia pendidikan. Melalui pendekatan inovatif dan interaktif, kami membantu sekolah, guru, serta siswa menguasai keterampilan digital era masa kini.
             </p>
-            <p className="mb-6 leading-relaxed text-slate-600">
+            <p className="mb-6 leading-relaxed">
               Fokus utama kami meliputi pengembangan materi berbasis logika pemrograman, komputasi terapan, serta otomatisasi alur kerja pembelajaran.
             </p>
           </motion.div>
@@ -503,7 +555,9 @@ export default function App() {
                 transition: { duration: 0.45, ease: [0.32, 0, 0.67, 0] }
               }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-3xl p-4 md:p-6 shadow-2xl border border-slate-100 overflow-hidden cursor-default flex flex-col items-center"
+              className={`relative max-w-5xl w-full max-h-[90vh] rounded-3xl p-4 md:p-6 shadow-2xl border overflow-hidden cursor-default flex flex-col items-center transition-colors ${
+                darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-100 text-slate-800'
+              }`}
             >
               <button
                 onClick={() => setIsPreviewOpen(false)}
@@ -522,7 +576,7 @@ export default function App() {
               </div>
 
               <div className="mt-4 text-center">
-                <p className="text-xs font-semibold text-slate-500">
+                <p className={`text-xs font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                   Klik di luar gambar atau tombol silang untuk keluar (Sweep Up Exit)
                 </p>
               </div>
@@ -532,11 +586,11 @@ export default function App() {
       </AnimatePresence>
 
       {/* 5. LAYANAN SECTION */}
-      <section id="layanan" className="py-20 bg-slate-50">
+      <section id="layanan" className={`py-20 transition-colors duration-300 ${darkMode ? 'bg-slate-900/60' : 'bg-slate-50'}`}>
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
-            <h2 className="mb-4 text-3xl font-bold text-slate-900">Layanan Unggulan</h2>
-            <p className="text-slate-600">Solusi terintegrasi yang dirancang khusus untuk kebutuhan digitalisasi lembaga pendidikan.</p>
+            <h2 className={`mb-4 text-3xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan Unggulan</h2>
+            <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Solusi terintegrasi yang dirancang khusus untuk kebutuhan digitalisasi lembaga pendidikan.</p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
@@ -547,7 +601,11 @@ export default function App() {
             ].map((service, index) => (
               <motion.div
                 key={index}
-                className="group rounded-[28px] border border-slate-100 bg-white p-8 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-2 hover:border-[#263BAA]/40"
+                className={`group rounded-[28px] border p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#263BAA]/40 ${
+                  darkMode
+                    ? 'bg-slate-900 border-slate-800 shadow-slate-950/40'
+                    : 'bg-white border-slate-100 shadow-slate-200/50'
+                }`}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -556,8 +614,8 @@ export default function App() {
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#263BAA]/15 text-xl text-[#263BAA] transition-transform duration-300 group-hover:scale-110">
                   {service.icon}
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-slate-900">{service.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-600">{service.desc}</p>
+                <h3 className={`mb-3 text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>{service.title}</h3>
+                <p className={`text-sm leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>{service.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -566,7 +624,11 @@ export default function App() {
 
       {/* 6. KONTAK SECTION */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid gap-12 rounded-[30px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/60 md:grid-cols-2 md:p-12">
+        <div className={`grid gap-12 rounded-[30px] border p-8 shadow-xl md:grid-cols-2 md:p-12 transition-colors duration-300 ${
+          darkMode
+            ? 'bg-slate-900 border-slate-800 shadow-slate-950/50'
+            : 'bg-white border-slate-100 shadow-slate-200/60'
+        }`}>
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -574,24 +636,26 @@ export default function App() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="mb-4 text-3xl font-bold text-[#ee944f]">Hubungi Kami</h2>
-            <p className="mb-8 leading-relaxed text-slate-600">
+            <p className={`mb-8 leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
               Punya pertanyaan mengenai program atau ingin berkolaborasi? Isi formulir di samping atau hubungi kami melalui saluran berikut:
             </p>
 
             <div className="space-y-4">
-              <div className="flex items-center space-x-4 rounded-2xl bg-slate-50 p-3">
+              <div className={`flex items-center space-x-4 rounded-2xl p-3 ${darkMode ? 'bg-slate-800/60' : 'bg-slate-50'}`}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ee944f]/15 text-[#ee944f]">📍</div>
                 <div>
-                  <p className="text-xs font-medium text-slate-500">Alamat Kantor</p>
-                  <p className="text-sm font-semibold text-slate-800">Jl. Genteng Muhamadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur</p>
+                  <p className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Alamat Kantor</p>
+                  <p className={`text-sm font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
+                    Jl. Genteng Muhamadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4 rounded-2xl bg-slate-50 p-3">
+              <div className={`flex items-center space-x-4 rounded-2xl p-3 ${darkMode ? 'bg-slate-800/60' : 'bg-slate-50'}`}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ee944f]/15 text-[#ee944f]">✉️</div>
                 <div>
-                  <p className="text-xs font-medium text-slate-500">Email Resmi</p>
-                  <p className="text-sm font-semibold text-slate-800">.sch.id</p>
+                  <p className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Email Resmi</p>
+                  <p className={`text-sm font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>.sch.id</p>
                 </div>
               </div>
             </div>
@@ -599,7 +663,9 @@ export default function App() {
 
           <motion.form
             onSubmit={handleSubmit}
-            className="space-y-4 rounded-[26px] bg-slate-50 p-5 md:p-6"
+            className={`space-y-4 rounded-[26px] p-5 md:p-6 transition-colors ${
+              darkMode ? 'bg-slate-800/50' : 'bg-slate-50'
+            }`}
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -612,38 +678,44 @@ export default function App() {
             )}
 
             <div>
-              <label className="mb-1 block text-sm font-semibold text-slate-700">Nama Lengkap</label>
+              <label className={`mb-1 block text-sm font-semibold ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>Nama Lengkap</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Masukkan nama Anda"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20"
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${
+                  darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
+                }`}
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-semibold text-slate-700">Alamat Email</label>
+              <label className={`mb-1 block text-sm font-semibold ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>Alamat Email</label>
               <input
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="nama@email.com"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20"
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${
+                  darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
+                }`}
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-semibold text-slate-700">Pesan / Pertanyaan</label>
+              <label className={`mb-1 block text-sm font-semibold ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>Pesan / Pertanyaan</label>
               <textarea
                 rows="4"
                 required
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Tuliskan pesan Anda di sini..."
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20"
+                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${
+                  darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
+                }`}
               ></textarea>
             </div>
 
