@@ -27,7 +27,7 @@ const slidesData = [
     id: 3,
     badge: "Ekstrakurikuler & Karakter",
     title: "Pengembangan Potensi, Kepemimpinan, dan Kreativitas",
-    description: "Berbagai kegiatan ekstrakurikuler mulai dari HW, Robotik, Seni, hingga Olahraga untuk membentuk karakter siswa yang holistik.",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     image: hero3Img,
   },
 ];
@@ -141,10 +141,6 @@ export default function App() {
     setIsScrolled(latest > 50);
   });
 
-  // Form State
-  const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-
   // Hero Slider Logic
   const slideIndex = Math.abs(page % slidesData.length);
 
@@ -156,7 +152,7 @@ export default function App() {
     const timer = setInterval(() => {
       paginate(1);
     }, 6000);
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [page]);
 
   const currentSlide = slidesData[slideIndex];
@@ -178,17 +174,6 @@ export default function App() {
     scrollTimeoutRef.current = setTimeout(() => {
       setIsClickScrolling(false);
     }, 800);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.name && formData.email && formData.message) {
-      setSubmitted(true);
-      setTimeout(() => {
-        setSubmitted(false);
-        setFormData({ name: '', email: '', message: '' });
-      }, 4000);
-    }
   };
 
   return (
@@ -373,7 +358,7 @@ export default function App() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-                <span className="inline-block bg-[#ee944f] text-white font-semibold px-4 py-1.5 rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">
+                <span className="inline-block bg-[#ee944f] text-[#ffffff] font-semibold px-4 py-1.5 rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">
                   {currentSlide.badge}
                 </span>
 
@@ -495,10 +480,10 @@ export default function App() {
           >
             <h2 className="mb-6 text-3xl font-bold text-[#ee944f]">Tentang Kami</h2>
             <p className="mb-4 leading-relaxed">
-              Berdiri sejak tahun 2020, kami berkomitmen untuk menjembatani kesenjangan teknologi dalam dunia pendidikan. Melalui pendekatan inovatif dan interaktif, kami membantu sekolah, guru, serta siswa menguasai keterampilan digital era masa kini.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <p className="mb-6 leading-relaxed">
-              Fokus utama kami meliputi pengembangan materi berbasis logika pemrograman, komputasi terapan, serta otomatisasi alur kerja pembelajaran.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
           </motion.div>
 
@@ -582,14 +567,14 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className={`mb-4 text-3xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan Unggulan</h2>
-            <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Solusi terintegrasi yang dirancang khusus untuk kebutuhan digitalisasi lembaga pendidikan.</p>
+            <p className={darkMode ? 'text-slate-400' : 'text-slate-600'}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
             {[
-              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Pembuatan platform manajemen pembelajaran (LMS) kustom dan situs profil lembaga yang cepat, aman, serta mudah dikelola.', delay: 0.1 },
-              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Penyusunan alur materi Computational Thinking, dasar coding, hingga analisis data interaktif untuk jenjang sekolah.', delay: 0.2 },
-              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Pembangunan jaringan Computer-Based Testing (CBT) berbasis Wi-Fi lokal yang dapat diakses siswa dengan lancar dan aman.', delay: 0.3 },
+              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.1 },
+              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.2 },
+              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.3 },
             ].map((service, index) => (
               <motion.div
                 key={index}
@@ -598,7 +583,7 @@ export default function App() {
                   : 'bg-white border-slate-100 shadow-slate-200/50'
                   }`}
                 initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: service.delay }}
               >
@@ -613,7 +598,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. KONTAK SECTION */}
+      {/* 6. KONTAK SECTION (PETA LOKASI GOOGLE MAPS) */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className={`grid gap-12 rounded-[30px] border p-8 shadow-xl md:grid-cols-2 md:p-12 transition-colors duration-300 ${darkMode
           ? 'bg-slate-900 border-slate-800 shadow-slate-950/50'
@@ -624,94 +609,57 @@ export default function App() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="flex flex-col justify-center"
           >
             <h2 className="mb-4 text-3xl font-bold text-[#ee944f]">Hubungi Kami</h2>
             <p className={`mb-8 leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-              Punya pertanyaan mengenai program atau ingin berkolaborasi? Isi formulir di samping atau hubungi kami melalui saluran berikut:
+              Kunjungi lokasi kami secara langsung atau hubungi kontak resmi SMP Muhammadiyah 2 Surabaya untuk informasi pendaftaran dan kerja sama:
             </p>
 
             <div className="space-y-4">
-              <div className={`flex items-center space-x-4 rounded-2xl p-3 ${darkMode ? 'bg-slate-800/60' : 'bg-slate-50'}`}>
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ee944f]/15 text-[#ee944f]">📍</div>
+              <div className={`flex items-center space-x-4 rounded-2xl p-4 ${darkMode ? 'bg-slate-800/60' : 'bg-slate-50'}`}>
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#ee944f]/15 text-xl text-[#ee944f]">📍</div>
                 <div>
-                  <p className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Alamat Kantor</p>
+                  <p className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Alamat Sekolah</p>
                   <p className={`text-sm font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
-                    Jl. Genteng Muhamadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur
+                    Jl. Genteng Muhammadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur 60275
                   </p>
                 </div>
               </div>
 
-              <div className={`flex items-center space-x-4 rounded-2xl p-3 ${darkMode ? 'bg-slate-800/60' : 'bg-slate-50'}`}>
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ee944f]/15 text-[#ee944f]">✉️</div>
+              <div className={`flex items-center space-x-4 rounded-2xl p-4 ${darkMode ? 'bg-slate-800/60' : 'bg-slate-50'}`}>
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#ee944f]/15 text-xl text-[#ee944f]">✉️</div>
                 <div>
                   <p className={`text-xs font-medium ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Email Resmi</p>
-                  <p className={`text-sm font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>.sch.id</p>
+                  <p className={`text-sm font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
+                    smpmudaprestasi@gmail.com
+                  </p>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          <motion.form
-            onSubmit={handleSubmit}
-            className={`space-y-4 rounded-[26px] p-5 md:p-6 transition-colors ${darkMode ? 'bg-slate-800/50' : 'bg-slate-50'
+          {/* EMBED GOOGLE MAPS LOKASI SEKOLAH */}
+          <motion.div
+            className={`h-full min-h-[380px] w-full overflow-hidden rounded-[26px] border shadow-md transition-colors ${darkMode ? 'border-slate-800 bg-slate-800/40' : 'border-slate-200 bg-slate-100'
               }`}
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            {submitted && (
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-700">
-                Pesan Anda berhasil terkirim! Tim kami akan segera menghubungi Anda.
-              </div>
-            )}
-
-            <div>
-              <label className={`mb-1 block text-sm font-semibold ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>Nama Lengkap</label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Masukkan nama Anda"
-                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
-                  }`}
-              />
-            </div>
-
-            <div>
-              <label className={`mb-1 block text-sm font-semibold ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>Alamat Email</label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="nama@email.com"
-                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
-                  }`}
-              />
-            </div>
-
-            <div>
-              <label className={`mb-1 block text-sm font-semibold ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>Pesan / Pertanyaan</label>
-              <textarea
-                rows="4"
-                required
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder="Tuliskan pesan Anda di sini..."
-                className={`w-full rounded-xl border px-4 py-3 text-sm shadow-sm outline-none transition focus:border-[#263BAA] focus:ring-2 focus:ring-[#263BAA]/20 ${darkMode ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-slate-200 text-slate-700'
-                  }`}
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-[#263BAA] hover:bg-[#1f308a] py-3.5 font-semibold text-white shadow-lg shadow-[#263BAA]/30 transition hover:-translate-y-0.5"
-            >
-              Kirim Pesan
-            </button>
-          </motion.form>
+            <iframe
+              title="Peta Lokasi SMP Muhammadiyah 2 Surabaya"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.84927954261!2d112.74138269999999!3d-7.2579887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f967c7f0eab9%3A0x32528eebe5e367c7!2sSMP%20Muhammadiyah%202%20Surabaya!5e0!3m2!1sid!2sid!4v1787024020689!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+              width="100%"
+              height="100%"
+              style={{ border: 0, minHeight: '380px' }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full rounded-[26px]"
+            ></iframe>
+          </motion.div>
         </div>
       </section>
 
