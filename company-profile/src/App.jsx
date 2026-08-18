@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import logoSekolah from './assets/logo.png';
-import smp2sbyLogo from './assets/SMP2SBY.JPG';
+import smp2sbyLogo from './assets/logo.png';
 import visiMisiImg from './assets/visi_misi.png';
 
 // 1. Data Slider Kegiatan Sekolah
@@ -185,7 +185,7 @@ export default function App() {
                 duration: 1.2,
                 ease: "easeOut"
               }}
-              className="w-32 h-32 md:w-44 md:h-44 object-cover rounded-2xl mb-6 shadow-2xl border-2 border-white/20 drop-shadow-[0_0_35px_rgba(38,59,170,0.5)]"
+              className="w-32 h-32 md:w-44 md:h-44 object-cover rounded-2xl mb-6 shadow-2xl 20 drop-shadow-[0_0_35px_rgba(38,59,170,0.5)]"
             />
 
             {/* Teks Judul Intro */}
