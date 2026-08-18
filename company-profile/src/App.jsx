@@ -57,6 +57,9 @@ const slideVariants = {
 };
 
 export default function App() {
+  // Intro Splash Screen State
+  const [isLoading, setIsLoading] = useState(true);
+
   // Hero Slider State
   const [[page, direction], setPage] = useState([0, 0]);
 
@@ -66,6 +69,14 @@ export default function App() {
   // Scroll Adaptation State
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
+
+  // Durasi Tampil Intro Splash Screen (2.6 Detik)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2600);
+    return () => clearTimeout(timer);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
@@ -146,6 +157,54 @@ export default function App() {
 
   return (
     <div className="min-h-screen font-sans text-slate-800 bg-white">
+
+      {/* 0. INTRO SPLASH SCREEN DENGAN ANIMASI SMOOTH ZOOM */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="intro-splash"
+            initial={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 2.2, // Efek Zoom In Menembus Masuk ke Website
+              transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] }
+            }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950 text-white select-none"
+          >
+            {/* Animasi Zoom Bounce Logo */}
+            <motion.img
+              src={logoSekolah}
+              alt="Logo SMP Muhammadiyah 2 Surabaya"
+              initial={{ scale: 0.2, opacity: 0 }}
+              animate={{
+                scale: [0.2, 1.15, 1],
+                opacity: 1
+              }}
+              transition={{
+                duration: 1.2,
+                ease: "easeOut"
+              }}
+              className="w-32 h-32 md:w-44 md:h-44 object-contain mb-6 drop-shadow-[0_0_35px_rgba(238,148,79,0.45)]"
+            />
+
+            {/* Teks Judul Intro */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="text-center px-4"
+            >
+              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#ee944f] mb-2">
+                SMP MUHAMMADIYAH 2 SURABAYA
+              </h1>
+              <p className="text-xs md:text-sm text-slate-300 font-medium tracking-wide">
+                Membangun Ekosistem Digital Berbasis Pembelajaran Modern
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% SAGE GREEN #73ad97) */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
@@ -428,10 +487,9 @@ export default function App() {
                 scale: 0.9,
                 transition: { duration: 0.45, ease: [0.32, 0, 0.67, 0] }
               }}
-              onClick={(e) => e.stopPropagation()} // Mencegah modal tertutup saat area gambar diklik
+              onClick={(e) => e.stopPropagation()}
               className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-3xl p-4 md:p-6 shadow-2xl border border-slate-100 overflow-hidden cursor-default flex flex-col items-center"
             >
-              {/* Tombol Close */}
               <button
                 onClick={() => setIsPreviewOpen(false)}
                 className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-slate-900/60 hover:bg-[#ee944f] backdrop-blur-md text-white font-bold flex items-center justify-center transition shadow-md"
@@ -440,7 +498,6 @@ export default function App() {
                 ✕
               </button>
 
-              {/* Tampilan Gambar Preview Jelas */}
               <div className="w-full h-full overflow-auto rounded-2xl flex items-center justify-center">
                 <img
                   src={visiMisiImg}
