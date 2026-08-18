@@ -209,8 +209,8 @@ export default function App() {
       {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% ROYAL BLUE #263BAA) */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
-            ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
-            : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
+          ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
+          : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl'
           }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -222,7 +222,7 @@ export default function App() {
             />
             <motion.span
               animate={{
-                color: isScrolled ? '#ee944f' : '#0f172a'
+                color: isScrolled ? '#263BAA' : '#0f172a'
               }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="font-axiforma text-lg md:text-xl font-bold tracking-wide"
@@ -377,8 +377,8 @@ export default function App() {
                 setPage([index, dir]);
               }}
               className={`h-2.5 rounded-full transition-all duration-300 ${index === slideIndex
-                  ? 'w-8 bg-[#263BAA]'
-                  : 'w-2.5 bg-white/40 hover:bg-white/70'
+                ? 'w-8 bg-[#263BAA]'
+                : 'w-2.5 bg-white/40 hover:bg-white/70'
                 }`}
               aria-label={`Go to slide ${index + 1}`}
             />
