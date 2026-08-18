@@ -71,6 +71,81 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
 
+  // Active & Hover State untuk Navbar Pill (Pill Muncul Terus)
+  const [activeNavIndex, setActiveNavIndex] = useState(0);
+  const [hoveredNavIndex, setHoveredNavIndex] = useState(null);
+
+  const navRef = useRef(null);
+  const itemRefs = useRef([]);
+
+  const [pillStyle, setPillStyle] = useState({
+    width: 0,
+    height: 0,
+    transform: 'translate(0px, 0px)',
+    opacity: 1,
+  });
+
+  const navMenuItems = [
+    { label: 'Beranda', href: '#beranda' },
+    { label: 'Profil', href: '#profil' },
+    { label: 'Layanan', href: '#layanan' },
+    { label: 'Kontak', href: '#kontak' },
+  ];
+
+  // Target index: jika sedang dikursor gunakan hoveredNavIndex, jika tidak gunakan activeNavIndex
+  const targetIndex = hoveredNavIndex !== null ? hoveredNavIndex : activeNavIndex;
+
+  // Fungsi memperbarui posisi pill secara presisi
+  const updatePillPosition = (index) => {
+    const targetElement = itemRefs.current[index];
+    if (!navRef.current || !targetElement) return;
+
+    const itemRect = targetElement.getBoundingClientRect();
+    const containerRect = navRef.current.getBoundingClientRect();
+
+    setPillStyle({
+      width: `${itemRect.width}px`,
+      height: `${itemRect.height}px`,
+      transform: `translate(${itemRect.left - containerRect.left}px, ${itemRect.top - containerRect.top}px)`,
+      opacity: 1,
+    });
+  };
+
+  // Update posisi pill saat menu berubah atau splash screen selesai
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updatePillPosition(targetIndex);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [targetIndex, isLoading]);
+
+  // Handle pembaharuan posisi saat ukuran layar di-resize
+  useEffect(() => {
+    const handleResize = () => updatePillPosition(targetIndex);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [targetIndex]);
+
+  // Deteksi posisi scroll layar untuk mengaktifkan menu navbar secara otomatis
+  useEffect(() => {
+    const handleScrollActiveSection = () => {
+      const scrollPosition = window.scrollY + 200;
+      navMenuItems.forEach((item, index) => {
+        const element = document.querySelector(item.href);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveNavIndex(index);
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScrollActiveSection);
+    return () => window.removeEventListener('scroll', handleScrollActiveSection);
+  }, []);
+
   // Durasi Tampil Intro Splash Screen (2.6 Detik)
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -83,26 +158,9 @@ export default function App() {
     setIsScrolled(latest > 50);
   });
 
-  // Form & Navbar State
+  // Form State
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-
-  const navRef = useRef(null);
-  const [activeHoverIndex, setActiveHoverIndex] = useState(null);
-  const [pillStyle, setPillStyle] = useState({
-    width: 0,
-    height: 0,
-    transform: 'translate(0px, 0px)',
-    opacity: 0,
-  });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const navMenuItems = [
-    { label: 'Beranda', href: '#beranda' },
-    { label: 'Profil', href: '#profil' },
-    { label: 'Layanan', href: '#layanan' },
-    { label: 'Kontak', href: '#kontak' },
-  ];
 
   // Hero Slider Logic
   const slideIndex = Math.abs(page % slidesData.length);
@@ -120,29 +178,15 @@ export default function App() {
 
   const currentSlide = slidesData[slideIndex];
 
-  // Navbar Logic
-  const handleMouseEnter = (e, index) => {
-    if (!navRef.current) return;
-    const itemRect = e.currentTarget.getBoundingClientRect();
-    const containerRect = navRef.current.getBoundingClientRect();
-    const left = itemRect.left - containerRect.left;
-    const top = itemRect.top - containerRect.top;
-
-    setPillStyle({
-      width: `${itemRect.width}px`,
-      height: `${itemRect.height}px`,
-      transform: `translate(${left}px, ${top}px)`,
-      opacity: 1,
-    });
-
-    setIsHovered(true);
-    setActiveHoverIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setActiveHoverIndex(null);
-    setPillStyle((prev) => ({ ...prev, opacity: 0 }));
+  // Handler Klik Menu Navbar dengan Smooth Scroll
+  const handleNavClick = (e, href, index) => {
+    e.preventDefault();
+    setActiveNavIndex(index);
+    setHoveredNavIndex(null);
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -195,7 +239,7 @@ export default function App() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-center px-4"
             >
-              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#fffff] mb-2">
+              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#FFFFF] mb-2">
                 SMP MUHAMMADIYAH 2 SURABAYA
               </h1>
               <p className="text-xs md:text-sm text-slate-300 font-medium tracking-wide">
@@ -206,7 +250,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 1. NAVBAR (DOMINAN 60% PUTIH + AKSEN 10% ROYAL BLUE #263BAA) */}
+      {/* 1. NAVBAR DENGAN ACTIVE PILL SELALU MUNCUL & SMOOTH SCROLL */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
           ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
@@ -222,7 +266,7 @@ export default function App() {
             />
             <motion.span
               animate={{
-                color: isScrolled ? '#263BAA' : '#0f172a'
+                color: isScrolled ? '#ee944f' : '#0f172a'
               }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="font-axiforma text-lg md:text-xl font-bold tracking-wide"
@@ -231,14 +275,15 @@ export default function App() {
             </motion.span>
           </div>
 
+          {/* MENU NAVIGASI DENGAN PILL SLIDE PERMANEN */}
           <div
             ref={navRef}
-            onMouseLeave={handleMouseLeave}
+            onMouseLeave={() => setHoveredNavIndex(null)}
             className="relative hidden items-center rounded-2xl border border-slate-200/60 bg-slate-50 p-1.5 backdrop-blur-xl md:flex"
           >
+            {/* Background Kapsul Meluncur (Selalu Muncul) */}
             <div
-              className={`pointer-events-none absolute left-0 top-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30 ${isHovered ? 'transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : 'transition-opacity duration-200'
-                }`}
+              className="pointer-events-none absolute left-0 top-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30 transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
               style={{
                 width: pillStyle.width,
                 height: pillStyle.height,
@@ -247,21 +292,27 @@ export default function App() {
               }}
             />
 
-            {navMenuItems.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                onMouseEnter={(e) => handleMouseEnter(e, index)}
-                className={`relative z-10 rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${activeHoverIndex === index ? 'text-white' : 'text-slate-700'
-                  }`}
-              >
-                {item.label}
-              </a>
-            ))}
+            {navMenuItems.map((item, index) => {
+              const isSelected = targetIndex === index;
+              return (
+                <a
+                  key={index}
+                  href={item.href}
+                  ref={(el) => (itemRefs.current[index] = el)}
+                  onClick={(e) => handleNavClick(e, item.href, index)}
+                  onMouseEnter={() => setHoveredNavIndex(index)}
+                  className={`relative z-10 rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${isSelected ? 'text-white' : 'text-slate-700'
+                    }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </div>
 
           <a
             href="#kontak"
+            onClick={(e) => handleNavClick(e, '#kontak', 3)}
             className="hidden rounded-full bg-[#263BAA] hover:bg-[#1f308a] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#263BAA]/30 transition transform hover:scale-[1.02] md:inline-block"
           >
             Hubungi Kami
@@ -330,12 +381,14 @@ export default function App() {
                 <div className="flex flex-wrap gap-4">
                   <a
                     href="#layanan"
+                    onClick={(e) => handleNavClick(e, '#layanan', 2)}
                     className="bg-[#263BAA] hover:bg-[#1f308a] text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-[#263BAA]/30 transition transform hover:-translate-y-0.5"
                   >
                     Jelajahi Program
                   </a>
                   <a
                     href="#profil"
+                    onClick={(e) => handleNavClick(e, '#profil', 1)}
                     className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-semibold px-7 py-3.5 rounded-xl transition"
                   >
                     Profil Sekolah
@@ -517,7 +570,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 5. LAYANAN SECTION (AKSEN 10% ROYAL BLUE #263BAA) */}
+      {/* 5. LAYANAN SECTION */}
       <section id="layanan" className="py-20 bg-slate-50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center">
@@ -550,7 +603,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. KONTAK SECTION (AKSEN 10% ROYAL BLUE #263BAA) */}
+      {/* 6. KONTAK SECTION */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-12 rounded-[30px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/60 md:grid-cols-2 md:p-12">
           <motion.div
