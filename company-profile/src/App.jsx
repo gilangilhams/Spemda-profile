@@ -218,7 +218,7 @@ export default function App() {
                 SMP MUHAMMADIYAH 2 SURABAYA
               </h1>
               <p className="text-xs md:text-sm text-slate-300 font-medium tracking-wide">
-                Membangun Ekosistem Digital Berbasis Pembelajaran Modern
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
             </motion.div>
           </motion.div>
