@@ -146,7 +146,7 @@ export default function App() {
   // Handler Klik Menu Navbar dengan Smooth Scroll (Tanpa Animasi Gliding Perantara)
   const handleNavClick = (e, href, index) => {
     e.preventDefault();
-    
+
     // Matikan animasi pergerakan kapsul sementara
     setIsClickScrolling(true);
     setActiveNavIndex(index);
@@ -261,9 +261,8 @@ export default function App() {
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href, index)}
                   onMouseEnter={() => setHoveredNavIndex(index)}
-                  className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${
-                    isSelected ? 'text-white' : 'text-slate-700 hover:text-slate-900'
-                  }`}
+                  className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${isSelected ? 'text-white' : 'text-slate-700 hover:text-slate-900'
+                    }`}
                 >
                   {isSelected && (
                     <motion.div
@@ -282,13 +281,7 @@ export default function App() {
             })}
           </div>
 
-          <a
-            href="#kontak"
-            onClick={(e) => handleNavClick(e, '#kontak', 3)}
-            className="hidden rounded-full bg-[#263BAA] hover:bg-[#1f308a] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#263BAA]/30 transition transform hover:scale-[1.02] md:inline-block"
-          >
-            Hubungi Kami
-          </a>
+
         </div>
       </nav>
 
