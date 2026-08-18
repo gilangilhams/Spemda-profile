@@ -242,8 +242,8 @@ export default function App() {
       {/* 1. NAVBAR DENGAN MODE GELAP & ANIMASI FRAMER MOTION */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${darkMode
-            ? (isScrolled ? 'bg-slate-900/95 border-slate-800/80 shadow-slate-950/50 backdrop-blur-xl' : 'bg-slate-900/80 border-slate-800/50 backdrop-blur-xl')
-            : (isScrolled ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl' : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl')
+          ? (isScrolled ? 'bg-slate-900/95 border-slate-800/80 shadow-slate-950/50 backdrop-blur-xl' : 'bg-slate-900/80 border-slate-800/50 backdrop-blur-xl')
+          : (isScrolled ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl' : 'bg-white/80 border-white/40 shadow-sm backdrop-blur-xl')
           }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -280,8 +280,8 @@ export default function App() {
                     onClick={(e) => handleNavClick(e, item.href, index)}
                     onMouseEnter={() => setHoveredNavIndex(index)}
                     className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${isSelected
-                        ? 'text-white'
-                        : (darkMode ? 'text-slate-300 hover:text-white' : 'text-slate-700 hover:text-slate-900')
+                      ? 'text-white'
+                      : (darkMode ? 'text-slate-300 hover:text-white' : 'text-slate-700 hover:text-slate-900')
                       }`}
                   >
                     {isSelected && (
@@ -307,8 +307,8 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               onClick={() => setDarkMode(!darkMode)}
               className={`flex h-10 w-10 items-center justify-center rounded-2xl border transition-colors ${darkMode
-                  ? 'border-slate-800 bg-slate-900 text-amber-400 hover:bg-slate-800'
-                  : 'border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200'
+                ? 'border-slate-800 bg-slate-900 text-amber-400 hover:bg-slate-800'
+                : 'border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200'
                 }`}
               aria-label="Toggle Dark Mode"
             >
@@ -485,8 +485,8 @@ export default function App() {
         <div className="grid items-center gap-12 md:grid-cols-2">
           <motion.div
             className={`rounded-[28px] border p-8 shadow-xl md:p-10 transition-colors duration-300 ${darkMode
-                ? 'bg-slate-900 border-slate-800 text-slate-300 shadow-slate-950/50'
-                : 'bg-white border-slate-100 text-slate-600 shadow-slate-200/50'
+              ? 'bg-slate-900 border-slate-800 text-slate-300 shadow-slate-950/50'
+              : 'bg-white border-slate-100 text-slate-600 shadow-slate-200/50'
               }`}
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -594,8 +594,8 @@ export default function App() {
               <motion.div
                 key={index}
                 className={`group rounded-[28px] border p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-[#263BAA]/40 ${darkMode
-                    ? 'bg-slate-900 border-slate-800 shadow-slate-950/40'
-                    : 'bg-white border-slate-100 shadow-slate-200/50'
+                  ? 'bg-slate-900 border-slate-800 shadow-slate-950/40'
+                  : 'bg-white border-slate-100 shadow-slate-200/50'
                   }`}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -616,8 +616,8 @@ export default function App() {
       {/* 6. KONTAK SECTION */}
       <section id="kontak" className="mx-auto max-w-7xl px-6 py-20">
         <div className={`grid gap-12 rounded-[30px] border p-8 shadow-xl md:grid-cols-2 md:p-12 transition-colors duration-300 ${darkMode
-            ? 'bg-slate-900 border-slate-800 shadow-slate-950/50'
-            : 'bg-white border-slate-100 shadow-slate-200/60'
+          ? 'bg-slate-900 border-slate-800 shadow-slate-950/50'
+          : 'bg-white border-slate-100 shadow-slate-200/60'
           }`}>
           <motion.div
             initial={{ opacity: 0, x: -60 }}
