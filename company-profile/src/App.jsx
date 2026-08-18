@@ -3,6 +3,9 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-
 import logoSekolah from './assets/logo.png';
 import smp2sbyLogo from './assets/logo.png';
 import visiMisiImg from './assets/visi_misi.png';
+import hero1Img from './assets/Hero1.JPG';
+import hero2Img from './assets/Hero2.JPG';
+import hero3Img from './assets/Hero3.JPG';
 
 // 1. Data Slider Kegiatan Sekolah
 const slidesData = [
@@ -11,21 +14,21 @@ const slidesData = [
     badge: "Informatika & Pemrograman",
     title: "Pembelajaran Berbasis Computational Thinking & Web Development",
     description: "Siswa diajak mengeksplorasi dunia logika pemrograman, pembuatan web, dan teknologi digital interaktif sejak dini.",
-    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1600&auto=format&fit=crop",
+    image: hero1Img,
   },
   {
     id: 2,
     badge: "Laboratorium & Sains",
     title: "Praktikum Interaktif & Eksperimen Sains Terapan",
     description: "Fasilitas laboratorium modern yang mendukung kegiatan ilmiah, observasi, dan pengujian konsep sains secara langsung.",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1600&auto=format&fit=crop",
+    image: hero2Img,
   },
   {
     id: 3,
     badge: "Ekstrakurikuler & Karakter",
     title: "Pengembangan Potensi, Kepemimpinan, dan Kreativitas",
     description: "Berbagai kegiatan ekstrakurikuler mulai dari HW, Robotik, Seni, hingga Olahraga untuk membentuk karakter siswa yang holistik.",
-    image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=1600&auto=format&fit=crop",
+    image: hero3Img,
   },
 ];
 
@@ -138,7 +141,7 @@ export default function App() {
     const timer = setInterval(() => {
       paginate(1);
     }, 6000);
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [page]);
 
   const currentSlide = slidesData[slideIndex];
@@ -280,7 +283,6 @@ export default function App() {
               );
             })}
           </div>
-
 
         </div>
       </nav>
@@ -581,7 +583,7 @@ export default function App() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ee944f]/15 text-[#ee944f]">📍</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Alamat Kantor</p>
-                  <p className="text-sm font-semibold text-slate-800">Jl. Pendidikan No. 12, Surabaya, Jawa Timur</p>
+                  <p className="text-sm font-semibold text-slate-800">Jl. Genteng Muhamadiyah No.28, Genteng, Kec. Genteng, Surabaya, Jawa Timur</p>
                 </div>
               </div>
 
@@ -589,7 +591,7 @@ export default function App() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ee944f]/15 text-[#ee944f]">✉️</div>
                 <div>
                   <p className="text-xs font-medium text-slate-500">Email Resmi</p>
-                  <p className="text-sm font-semibold text-slate-800">kontak@edutech.sch.id</p>
+                  <p className="text-sm font-semibold text-slate-800">.sch.id</p>
                 </div>
               </div>
             </div>
