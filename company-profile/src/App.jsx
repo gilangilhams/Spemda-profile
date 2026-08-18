@@ -195,7 +195,7 @@ export default function App() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-center px-4"
             >
-              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#ee944f] mb-2">
+              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#fffff] mb-2">
                 SMP MUHAMMADIYAH 2 SURABAYA
               </h1>
               <p className="text-xs md:text-sm text-slate-300 font-medium tracking-wide">
