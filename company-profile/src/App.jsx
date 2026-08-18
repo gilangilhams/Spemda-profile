@@ -266,7 +266,7 @@ export default function App() {
             />
             <motion.span
               animate={{
-                color: isScrolled ? '#ee944f' : '#0f172a'
+                color: isScrolled ? '#263BAA' : '#0f172a'
               }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               className="font-axiforma text-lg md:text-xl font-bold tracking-wide"
