@@ -71,19 +71,13 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
 
-  // Active & Hover State untuk Navbar Pill (Pill Muncul Terus)
+  // Active & Hover State untuk Navbar Pill
   const [activeNavIndex, setActiveNavIndex] = useState(0);
   const [hoveredNavIndex, setHoveredNavIndex] = useState(null);
 
-  const navRef = useRef(null);
-  const itemRefs = useRef([]);
-
-  const [pillStyle, setPillStyle] = useState({
-    width: 0,
-    height: 0,
-    transform: 'translate(0px, 0px)',
-    opacity: 1,
-  });
+  // State & Ref penanda navigasi via klik (Mencegah animasi berlebihan saat klik)
+  const [isClickScrolling, setIsClickScrolling] = useState(false);
+  const scrollTimeoutRef = useRef(null);
 
   const navMenuItems = [
     { label: 'Beranda', href: '#beranda' },
@@ -95,40 +89,11 @@ export default function App() {
   // Target index: jika sedang dikursor gunakan hoveredNavIndex, jika tidak gunakan activeNavIndex
   const targetIndex = hoveredNavIndex !== null ? hoveredNavIndex : activeNavIndex;
 
-  // Fungsi memperbarui posisi pill secara presisi
-  const updatePillPosition = (index) => {
-    const targetElement = itemRefs.current[index];
-    if (!navRef.current || !targetElement) return;
-
-    const itemRect = targetElement.getBoundingClientRect();
-    const containerRect = navRef.current.getBoundingClientRect();
-
-    setPillStyle({
-      width: `${itemRect.width}px`,
-      height: `${itemRect.height}px`,
-      transform: `translate(${itemRect.left - containerRect.left}px, ${itemRect.top - containerRect.top}px)`,
-      opacity: 1,
-    });
-  };
-
-  // Update posisi pill saat menu berubah atau splash screen selesai
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updatePillPosition(targetIndex);
-    }, 50);
-    return () => clearTimeout(timer);
-  }, [targetIndex, isLoading]);
-
-  // Handle pembaharuan posisi saat ukuran layar di-resize
-  useEffect(() => {
-    const handleResize = () => updatePillPosition(targetIndex);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [targetIndex]);
-
-  // Deteksi posisi scroll layar untuk mengaktifkan menu navbar secara otomatis
+  // Deteksi posisi scroll layar secara manual (Aktif saat tidak sedang berpindah via klik)
   useEffect(() => {
     const handleScrollActiveSection = () => {
+      if (isClickScrolling) return;
+
       const scrollPosition = window.scrollY + 200;
       navMenuItems.forEach((item, index) => {
         const element = document.querySelector(item.href);
@@ -144,7 +109,7 @@ export default function App() {
 
     window.addEventListener('scroll', handleScrollActiveSection);
     return () => window.removeEventListener('scroll', handleScrollActiveSection);
-  }, []);
+  }, [isClickScrolling]);
 
   // Durasi Tampil Intro Splash Screen (2.6 Detik)
   useEffect(() => {
@@ -173,20 +138,30 @@ export default function App() {
     const timer = setInterval(() => {
       paginate(1);
     }, 6000);
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, [page]);
 
   const currentSlide = slidesData[slideIndex];
 
-  // Handler Klik Menu Navbar dengan Smooth Scroll
+  // Handler Klik Menu Navbar dengan Smooth Scroll (Tanpa Animasi Gliding Perantara)
   const handleNavClick = (e, href, index) => {
     e.preventDefault();
+    
+    // Matikan animasi pergerakan kapsul sementara
+    setIsClickScrolling(true);
     setActiveNavIndex(index);
     setHoveredNavIndex(null);
+
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+
+    // Aktifkan kembali animasi normal setelah smooth scroll selesai (800ms)
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    scrollTimeoutRef.current = setTimeout(() => {
+      setIsClickScrolling(false);
+    }, 800);
   };
 
   const handleSubmit = (e) => {
@@ -203,7 +178,7 @@ export default function App() {
   return (
     <div className="min-h-screen font-sans text-slate-800 bg-white">
 
-      {/* 0. INTRO SPLASH SCREEN DENGAN GAMBAR INTRO SMP2SBY.JPG & SMOOTH ZOOM */}
+      {/* 0. INTRO SPLASH SCREEN */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -211,12 +186,11 @@ export default function App() {
             initial={{ opacity: 1 }}
             exit={{
               opacity: 0,
-              scale: 2.2, // Efek Zoom In Menembus Masuk ke Website
+              scale: 2.2,
               transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] }
             }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950 text-white select-none"
           >
-            {/* Animasi Zoom Bounce Logo SMP2SBY.JPG */}
             <motion.img
               src={smp2sbyLogo}
               alt="Logo Intro SMP Muhammadiyah 2 Surabaya"
@@ -229,17 +203,16 @@ export default function App() {
                 duration: 1.2,
                 ease: "easeOut"
               }}
-              className="w-32 h-32 md:w-44 md:h-44 object-cover rounded-2xl mb-6 shadow-2xl 20 drop-shadow-[0_0_35px_rgba(38,59,170,0.5)]"
+              className="w-32 h-32 md:w-44 md:h-44 object-cover rounded-2xl mb-6 shadow-2xl drop-shadow-[0_0_35px_rgba(38,59,170,0.5)]"
             />
 
-            {/* Teks Judul Intro */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-center px-4"
             >
-              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-[#FFFFF] mb-2">
+              <h1 className="text-xl md:text-2xl font-bold tracking-widest font-axiforma text-white mb-2">
                 SMP MUHAMMADIYAH 2 SURABAYA
               </h1>
               <p className="text-xs md:text-sm text-slate-300 font-medium tracking-wide">
@@ -250,7 +223,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 1. NAVBAR DENGAN ACTIVE PILL SELALU MUNCUL & SMOOTH SCROLL */}
+      {/* 1. NAVBAR DENGAN OPTIMALISASI ANIMASI HOVER & SCROLL */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 border-b ${isScrolled
           ? 'bg-white/95 border-slate-200/80 shadow-md backdrop-blur-xl'
@@ -275,36 +248,35 @@ export default function App() {
             </motion.span>
           </div>
 
-          {/* MENU NAVIGASI DENGAN PILL SLIDE PERMANEN */}
+          {/* MENU NAVIGASI */}
           <div
-            ref={navRef}
             onMouseLeave={() => setHoveredNavIndex(null)}
             className="relative hidden items-center rounded-2xl border border-slate-200/60 bg-slate-50 p-1.5 backdrop-blur-xl md:flex"
           >
-            {/* Background Kapsul Meluncur (Selalu Muncul) */}
-            <div
-              className="pointer-events-none absolute left-0 top-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30 transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
-              style={{
-                width: pillStyle.width,
-                height: pillStyle.height,
-                transform: pillStyle.transform,
-                opacity: pillStyle.opacity,
-              }}
-            />
-
             {navMenuItems.map((item, index) => {
               const isSelected = targetIndex === index;
               return (
                 <a
-                  key={index}
+                  key={item.label}
                   href={item.href}
-                  ref={(el) => (itemRefs.current[index] = el)}
                   onClick={(e) => handleNavClick(e, item.href, index)}
                   onMouseEnter={() => setHoveredNavIndex(index)}
-                  className={`relative z-10 rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${isSelected ? 'text-white' : 'text-slate-700'
-                    }`}
+                  className={`relative rounded-xl px-6 py-2.5 text-sm font-bold transition-colors duration-200 ${
+                    isSelected ? 'text-white' : 'text-slate-700 hover:text-slate-900'
+                  }`}
                 >
-                  {item.label}
+                  {isSelected && (
+                    <motion.div
+                      layoutId="active-navbar-pill"
+                      transition={
+                        isClickScrolling
+                          ? { duration: 0 } // Langsung berpindah saat klik (tanpa animasi meluncur)
+                          : { type: "spring", stiffness: 380, damping: 30 } // Animasi spring mulus saat scroll manual
+                      }
+                      className="absolute inset-0 rounded-xl bg-[#263BAA] shadow-md shadow-[#263BAA]/30"
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
                 </a>
               );
             })}
@@ -320,7 +292,7 @@ export default function App() {
         </div>
       </nav>
 
-      {/* 2. HERO SLIDER UTAMA (SIDE PADDING RESPONSIF UNTUK AMAN DARI TOMBOL SLIDER) */}
+      {/* 2. HERO SLIDER UTAMA */}
       <section id="beranda" className="relative w-full h-[80vh] min-h-[520px] overflow-hidden bg-slate-900 text-white">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -356,7 +328,6 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Kontainer Teks Hero: px-14 sm:px-20 md:px-24 Mencegah Teks Tertutup Navigasi */}
         <div className="relative z-10 max-w-7xl mx-auto h-full px-14 sm:px-20 md:px-24 flex flex-col justify-end pb-20 md:justify-center md:pb-0">
           <div className="max-w-3xl">
             <AnimatePresence mode="wait">
@@ -400,7 +371,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Tombol Navigasi Hero (Ukuran & Posisi Tepi Responsif) */}
         <button
           onClick={() => paginate(-1)}
           className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900/40 hover:bg-[#ee944f] backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition hover:scale-110 active:scale-95"
@@ -421,7 +391,6 @@ export default function App() {
           </svg>
         </button>
 
-        {/* Pagination Dots */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2.5">
           {slidesData.map((_, index) => (
             <button
@@ -440,7 +409,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. HERO BAR KECIL - INFINITE MARQUEE MITRA & INSTANSI */}
+      {/* 3. MARQUEE MITRA & INSTANSI */}
       <div className="w-full bg-slate-50 border-b border-slate-200/70 py-5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 mb-3 flex items-center justify-center space-x-3">
           <div className="h-px bg-slate-200 flex-1 max-w-[80px] md:max-w-[150px]" />
@@ -450,7 +419,6 @@ export default function App() {
           <div className="h-px bg-slate-200 flex-1 max-w-[80px] md:max-w-[150px]" />
         </div>
 
-        {/* Running Marquee Container */}
         <div className="relative flex overflow-x-hidden">
           <motion.div
             className="flex space-x-8 md:space-x-12 whitespace-nowrap py-2"
@@ -475,10 +443,9 @@ export default function App() {
         </div>
       </div>
 
-      {/* 4. PROFIL SECTION (DENGAN GAMBAR VISI MISI CLICKABLE) */}
+      {/* 4. PROFIL SECTION */}
       <section id="profil" className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          {/* Card 1: Tentang Kami */}
           <motion.div
             className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 md:p-10"
             initial={{ opacity: 0, x: -60 }}
@@ -495,7 +462,6 @@ export default function App() {
             </p>
           </motion.div>
 
-          {/* Card 2: Gambar Visi & Misi Clickable */}
           <motion.div
             className="group relative flex flex-col justify-between overflow-hidden rounded-[30px] bg-[#ee944f] p-6 text-white shadow-xl shadow-[#ee944f]/25 md:p-8 cursor-pointer"
             initial={{ opacity: 0, x: 60 }}
@@ -510,7 +476,6 @@ export default function App() {
                 alt="Visi dan Misi SMP Muhammadiyah 2 Surabaya"
                 className="w-full h-full object-cover rounded-2xl shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
-              {/* Overlay Hint saat Hover */}
               <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl backdrop-blur-[2px]">
                 <span className="bg-white/95 text-slate-900 font-bold px-5 py-2.5 rounded-full text-xs shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-all">
                   🔍 Klik untuk Memperbesar
@@ -521,7 +486,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* MODAL PREVIEW DENGAN ANIMASI SWEEP KE ATAS SAAT EXITED */}
+      {/* MODAL PREVIEW */}
       <AnimatePresence>
         {isPreviewOpen && (
           <motion.div
