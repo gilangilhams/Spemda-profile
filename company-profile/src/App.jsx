@@ -510,10 +510,10 @@ export default function App() {
           >
             <h2 className="mb-6 text-3xl font-bold text-[#ee944f]">Tentang Kami</h2>
             <p className="mb-4 leading-relaxed">
-              SMP Muhammadiyah 2 Surabaya berkomitmen untuk menjembatani kesenjangan teknologi dalam dunia pendidikan. Melalui pendekatan inovatif dan interaktif, kami membantu sekolah, guru, serta siswa menguasai keterampilan digital era masa kini.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
             <p className="mb-6 leading-relaxed">
-              Fokus utama kami meliputi pengembangan materi berbasis logika pemrograman, komputasi terapan, serta pembentukan karakter Islami yang holistik.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </motion.div>
 
@@ -533,7 +533,7 @@ export default function App() {
               />
               <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl backdrop-blur-[2px]">
                 <span className="bg-white/95 text-slate-900 font-bold px-5 py-2.5 rounded-full text-xs shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-all">
-                  🔍 Klik untuk Memperbesar
+                  Klik untuk Memperbesar
                 </span>
               </div>
             </div>
@@ -582,11 +582,7 @@ export default function App() {
                 />
               </div>
 
-              <div className="mt-4 text-center">
-                <p className={`text-xs font-semibold ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Klik di luar gambar atau tombol silang untuk keluar (Sweep Up Exit)
-                </p>
-              </div>
+
             </motion.div>
           </motion.div>
         )}
@@ -602,9 +598,9 @@ export default function App() {
 
           <div className="grid gap-8 md:grid-cols-3">
             {[
-              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Pembuatan platform manajemen pembelajaran (LMS) kustom dan situs profil lembaga yang cepat, aman, serta mudah dikelola.', delay: 0.1 },
-              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Penyusunan alur materi Computational Thinking, dasar coding, hingga analisis data interaktif untuk jenjang sekolah.', delay: 0.2 },
-              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Pembangunan jaringan Computer-Based Testing (CBT) berbasis Wi-Fi lokal yang dapat diakses siswa dengan lancar dan aman.', delay: 0.3 },
+              { icon: '💻', title: 'Pengembangan LMS & Web', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.1 },
+              { icon: '🚀', title: 'Kurikulum Informatics', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.2 },
+              { icon: '🛠️', title: 'Infrastruktur & CBT', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', delay: 0.3 },
             ].map((service, index) => (
               <motion.div
                 key={index}
